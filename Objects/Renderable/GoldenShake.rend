@@ -1,0 +1,17 @@
+{
+				"lodList": [
+					{
+						"subMeshList": [
+							{
+								"textureList": [
+									"$CONTENT_DATA/Objects/Textures/Golden/GoldenShake_Dif.tga",
+									"$CONTENT_DATA/Objects/Textures/Golden/GoldenShake_Asg.tga",
+									"$CONTENT_DATA/Objects/Textures/Golden/GoldenShake_Nor.tga"
+								],
+								"material": "DifAsgNor"
+							}
+						],
+						"mesh": "$CONTENT_DATA/Objects/Mesh/BetterShake.dae"
+					}
+                ]
+}

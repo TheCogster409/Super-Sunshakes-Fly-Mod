@@ -1,0 +1,71 @@
+{
+   "toolList" : [
+      {
+         "autoTool" : true,
+         "name" : "FlyTool",
+         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/char_eattool_sunshake.rend",
+         "previewRotation" : [ 1, 0, 0, 0, 0, -1, 0, 1, 0 ],
+         "script" : {
+            "class" : "FlyTool",
+            "data" : {},
+            "file" : "$CONTENT_DATA/Scripts/toolScripts/FlyShakeToolVisualTest.lua"
+         },
+         "uuid" : "40f50d24-7454-4a69-8bb3-1254ac4fba96"
+      },
+      {
+         "autoTool" : true,
+         "name" : "SpeedTool",
+         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/SpeedShake.rend",
+         "script" : {
+            "class" : "SpeedTool",
+            "data" : {},
+            "file" : "$CONTENT_DATA/Scripts/toolScripts/SpeedShakeTool.lua"
+         },
+         "uuid" : "92c4ea3e-7f5b-449f-a925-675b154e40b2"
+      },
+      {
+         "autoTool" : true,
+         "name" : "SlowTool",
+         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/SlowShake.rend",
+         "script" : {
+            "class" : "SlowTool",
+            "data" : {},
+            "file" : "$CONTENT_DATA/Scripts/toolScripts/SlowShakeTool.lua"
+         },
+         "uuid" : "7a2e89fb-7b08-4320-ac68-a632ae0e7f9c"
+      },
+      {
+         "autoTool" : true,
+         "name" : "TurboTool",
+         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/TurboShake.rend",
+         "script" : {
+            "class" : "TurboTool",
+            "data" : {},
+            "file" : "$CONTENT_DATA/Scripts/toolScripts/TurboShakeTool.lua"
+         },
+         "uuid" : "d25a7b71-d250-4f57-b7ca-3806b05a1e46"
+      },
+      {
+         "autoTool" : true,
+         "name" : "ResetTool",
+         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/ResetShake.rend",
+         "script" : {
+            "class" : "ResetTool",
+            "data" : {},
+            "file" : "$CONTENT_DATA/Scripts/toolScripts/ResetShakeTool.lua"
+         },
+         "uuid" : "33bc7095-1468-4b6e-8894-185ac1f2ae82"
+      },
+      {
+         "autoTool" : true,
+         "name" : "backroundManager",
+         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/ResetShake.rend",
+         "script" : {
+            "class" : "Manager",
+            "data" : {},
+            "file" : "$CONTENT_DATA/Scripts/toolScripts/Manager.lua"
+         },
+         "uuid" : "2ffc1e51-dcea-4ae5-bd86-ca0330b6177f"
+      }
+   ]
+}

@@ -1,0 +1,182 @@
+{
+   "partList" : [
+      {
+         "autoTool" : "40f50d24-7454-4a69-8bb3-1254ac4fba96",
+         "consumable" : true,
+         "cylinder" : {
+            "axis" : "Y",
+            "depth" : 1,
+            "diameter" : 1,
+            "margin" : 0.040
+         },
+         "flammable" : true,
+         "name" : "FlyShake",
+         "physicsMaterial" : "Metal",
+         "ratings" : {
+            "buoyancy" : 7,
+            "density" : 2,
+            "durability" : 1,
+            "friction" : 4
+         },
+         "renderable" : "$CONTENT_DATA/Objects/Renderable/FlyShake.rend",
+         "restrictions" : {
+            "erasable" : true
+         },
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "FlyShake",
+            "filename" : "$CONTENT_DATA/Scripts/FlyShake.lua"
+         },
+         "stackSize" : 5,
+         "sticky" : "-Y",
+         "uuid" : "631b46aa-5a7d-4fe9-9294-ec431058d6c7"
+      },
+      {
+         "autoTool" : "92c4ea3e-7f5b-449f-a925-675b154e40b2",
+         "consumable" : true,
+         "cylinder" : {
+            "axis" : "Y",
+            "depth" : 1,
+            "diameter" : 1,
+            "margin" : 0.040
+         },
+         "flammable" : true,
+         "name" : "SpeedShake",
+         "physicsMaterial" : "Metal",
+         "ratings" : {
+            "buoyancy" : 7,
+            "density" : 2,
+            "durability" : 1,
+            "friction" : 4
+         },
+         "renderable" : "$CONTENT_DATA/Objects/Renderable/SpeedShake.rend",
+         "restrictions" : {
+            "erasable" : true
+         },
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "SpeedShake",
+            "filename" : "$CONTENT_DATA/Scripts/SpeedShake.lua"
+         },
+         "stackSize" : 5,
+         "sticky" : "-Y",
+         "uuid" : "f0f57ae4-e8f4-4d3b-af28-e0a8c752a0aa"
+      },
+      {
+         "autoTool" : "7a2e89fb-7b08-4320-ac68-a632ae0e7f9c",
+         "consumable" : true,
+         "cylinder" : {
+            "axis" : "Y",
+            "depth" : 1,
+            "diameter" : 1,
+            "margin" : 0.040
+         },
+         "flammable" : true,
+         "name" : "SlowShake",
+         "physicsMaterial" : "Metal",
+         "ratings" : {
+            "buoyancy" : 7,
+            "density" : 2,
+            "durability" : 1,
+            "friction" : 4
+         },
+         "renderable" : "$CONTENT_DATA/Objects/Renderable/SlowShake.rend",
+         "restrictions" : {
+            "erasable" : true
+         },
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "SlowShake",
+            "filename" : "$CONTENT_DATA/Scripts/SlowShake.lua"
+         },
+         "stackSize" : 5,
+         "sticky" : "-Y",
+         "uuid" : "9393f6af-a473-4833-b34e-b6482c70aa09"
+      },
+      {
+         "autoTool" : "d25a7b71-d250-4f57-b7ca-3806b05a1e46",
+         "consumable" : true,
+         "cylinder" : {
+            "axis" : "Y",
+            "depth" : 1,
+            "diameter" : 1,
+            "margin" : 0.040
+         },
+         "flammable" : true,
+         "name" : "TurboShake",
+         "physicsMaterial" : "Metal",
+         "ratings" : {
+            "buoyancy" : 7,
+            "density" : 2,
+            "durability" : 1,
+            "friction" : 4
+         },
+         "renderable" : "$CONTENT_DATA/Objects/Renderable/TurboShake.rend",
+         "restrictions" : {
+            "erasable" : true
+         },
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "TurboShake",
+            "filename" : "$CONTENT_DATA/Scripts/TurboShake.lua"
+         },
+         "stackSize" : 5,
+         "sticky" : "-Y",
+         "uuid" : "1ad2874b-0f5c-4f9f-bafc-dd60ffe9a532"
+      },
+      {
+         "autoTool" : "33bc7095-1468-4b6e-8894-185ac1f2ae82",
+         "consumable" : true,
+         "cylinder" : {
+            "axis" : "Y",
+            "depth" : 1,
+            "diameter" : 1,
+            "margin" : 0.040
+         },
+         "flammable" : true,
+         "name" : "ResetShake",
+         "physicsMaterial" : "Metal",
+         "ratings" : {
+            "buoyancy" : 7,
+            "density" : 2,
+            "durability" : 1,
+            "friction" : 4
+         },
+         "renderable" : "$CONTENT_DATA/Objects/Renderable/ResetShake.rend",
+         "restrictions" : {
+            "erasable" : true
+         },
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "ResetShake",
+            "filename" : "$CONTENT_DATA/Scripts/ResetShake.lua"
+         },
+         "stackSize" : 5,
+         "sticky" : "-Y",
+         "uuid" : "f4f4c787-2fb7-4c05-b6fd-f088400c3b1d"
+      },
+      {
+         "cylinder" : {
+            "axis" : "Y",
+            "depth" : 1,
+            "diameter" : 1,
+            "margin" : 0.040
+         },
+         "name" : "Golden Sunshake",
+         "physicsMaterial" : "Metal",
+         "ratings" : {
+            "buoyancy" : 5,
+            "density" : 10,
+            "durability" : 5,
+            "friction" : 2
+         },
+         "renderable" : "$CONTENT_DATA/Objects/Renderable/GoldenShake.rend",
+         "restrictions" : {
+            "erasable" : true
+         },
+         "rotationSet" : "PropY",
+         "sticky" : "-Y",
+         "uuid" : "f1a78dcd-b85d-4dea-b826-dfce4892ec49"
+      }
+   ]
+}
