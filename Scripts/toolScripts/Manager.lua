@@ -31,15 +31,20 @@ function Manager.server_stopFly(self, data)
 end
 
 function Manager.server_Fly(self, params, caller)
-	print("hi")
 	self.network:sendToClient(self.player, "client_Fly", {not self.character:isSwimming()})
     self.character:setSwimming(not self.character:isSwimming())
+
+	if self.character:isSwimming() then
+		self.character.publicData.waterMovementSpeedFraction = 2
+	else
+		self.character.publicData.waterMovementSpeedFraction = 1  
+	end
 end
 
-function Manager.client_Fly(self)
+function Manager.client_Fly(self, data)
 	local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
 	if json["alertTextEnabled"] then
-		if self.character:isSwimming() then
+		if data[1] then
 			sm.gui.displayAlertText("Enabled fly mode.", 2)
 		else
 			sm.gui.displayAlertText("Disabled fly mode.", 2)
@@ -48,7 +53,6 @@ function Manager.client_Fly(self)
 end
 
 function Manager.server_Speed(self, params, caller)
-	print(params[2])
     if self.character:isSwimming() then
 		self.character.publicData.waterMovementSpeedFraction = params[2]*2
 	else
@@ -65,7 +69,6 @@ function Manager.client_Speed(self, speed)
 end
 
 function Manager.server_ToggleAlertText(self, params, caller)
-	print("hi", caller)
 	sm.json.save({["alertTextEnabled"] = params[2]}, "$CONTENT_DATA/Scripts/settings.json")
 	self.network:sendToClient(self.player, "client_ToggleAlertText", params[2])
 end
@@ -100,7 +103,6 @@ function sm.event.sendToWorld(world, callback, params)
 
     if params[1] == "/fly" then
         sm.event.sendToTool(Manager.instance.tool, "server_Fly", params)
-		sm.event.sendToTool(Manager.instance.tool, "client_Fly", params)
     elseif params[1] == "/speed" then
 		params[2] = tonumber(params[2])
 		if params[2] ~= nil then
