@@ -8,7 +8,7 @@
          "script" : {
             "class" : "FlyTool",
             "data" : {},
-            "file" : "$CONTENT_DATA/Scripts/toolScripts/FlyShakeToolVisualTest.lua"
+            "file" : "$CONTENT_DATA/Scripts/toolScripts/FlyShakeTool.lua"
          },
          "uuid" : "40f50d24-7454-4a69-8bb3-1254ac4fba96"
       },

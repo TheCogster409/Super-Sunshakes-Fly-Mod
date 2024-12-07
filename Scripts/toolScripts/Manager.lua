@@ -4,9 +4,10 @@ Manager.instance = nil
 -- Credits to elo_melo on discord for writing most of the command code!
 
 function Manager.client_onFixedUpdate(self)
+	print("hi")
 	local character = self.tool:getOwner().character
 	if not sm.localPlayer.getCarry():isEmpty() and character:isSwimming() then
-		self.network:sendToServer("server_stopFly", character)
+		self.network:sendToServer("server_stopFly", {character, self.tool:getOwner()})
 		local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
 		if json["alertTextEnabled"] then
 			sm.gui.displayAlertText("Be careful! Picking up containers while flying will get you stuck! \n We have stopped flying for you to keep you safe.", 5)
@@ -25,6 +26,7 @@ function Manager.client_onCreate(self)
 end
 
 function Manager.server_stopFly(self, data)
+	print(data)
 	self.character = data[1]
 	self.player = data[2]
 	self.character:setSwimming(false)
