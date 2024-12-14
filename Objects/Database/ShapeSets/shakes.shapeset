@@ -25,6 +25,9 @@
          "rotationSet" : "PropY",
          "scripted" : {
             "classname" : "FlyShake",
+            "data" : {
+               "Type" : "fly"
+            },
             "filename" : "$CONTENT_DATA/Scripts/FlyShake.lua"
          },
          "stackSize" : 5,
@@ -55,8 +58,12 @@
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "SpeedShake",
-            "filename" : "$CONTENT_DATA/Scripts/SpeedShake.lua"
+            "classname" : "Speed",
+            "data" : {
+               "Factor" : 4.0,
+               "Type" : "speed"
+            },
+            "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
          },
          "stackSize" : 5,
          "sticky" : "-Y",
@@ -86,8 +93,12 @@
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "SlowShake",
-            "filename" : "$CONTENT_DATA/Scripts/SlowShake.lua"
+            "classname" : "Speed",
+            "data" : {
+               "Factor" : 0.5,
+               "Type" : "slow"
+            },
+            "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
          },
          "stackSize" : 5,
          "sticky" : "-Y",
@@ -117,8 +128,12 @@
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "TurboShake",
-            "filename" : "$CONTENT_DATA/Scripts/TurboShake.lua"
+            "classname" : "Speed",
+            "data" : {
+               "Factor" : 10.0,
+               "Type" : "turbo"
+            },
+            "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
          },
          "stackSize" : 5,
          "sticky" : "-Y",
@@ -148,8 +163,12 @@
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "ResetShake",
-            "filename" : "$CONTENT_DATA/Scripts/ResetShake.lua"
+            "classname" : "Speed",
+            "data" : {
+               "Factor" : 1.0,
+               "Type" : "reset"
+            },
+            "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
          },
          "stackSize" : 5,
          "sticky" : "-Y",

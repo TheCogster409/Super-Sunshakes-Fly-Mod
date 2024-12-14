@@ -7,8 +7,10 @@
          "previewRotation" : [ 1, 0, 0, 0, 0, -1, 0, 1, 0 ],
          "script" : {
             "class" : "FlyTool",
-            "data" : {},
-            "file" : "$CONTENT_DATA/Scripts/toolScripts/FlyShakeTool.lua"
+            "data" : {
+               "Type" : "fly"
+            },
+            "file" : "$CONTENT_DATA/Scripts/FlyShakeTool.lua"
          },
          "uuid" : "40f50d24-7454-4a69-8bb3-1254ac4fba96"
       },
@@ -18,8 +20,11 @@
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/SpeedShake.rend",
          "script" : {
             "class" : "SpeedTool",
-            "data" : {},
-            "file" : "$CONTENT_DATA/Scripts/toolScripts/SpeedShakeTool.lua"
+            "data" : {
+               "Factor" : 4.0,
+               "Type" : "speed"
+            },
+            "file" : "$CONTENT_DATA/Scripts/SpeedTool.lua"
          },
          "uuid" : "92c4ea3e-7f5b-449f-a925-675b154e40b2"
       },
@@ -28,9 +33,12 @@
          "name" : "SlowTool",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/SlowShake.rend",
          "script" : {
-            "class" : "SlowTool",
-            "data" : {},
-            "file" : "$CONTENT_DATA/Scripts/toolScripts/SlowShakeTool.lua"
+            "class" : "SpeedTool",
+            "data" : {
+               "Factor" : 0.50,
+               "Type" : "slow"
+            },
+            "file" : "$CONTENT_DATA/Scripts/SpeedTool.lua"
          },
          "uuid" : "7a2e89fb-7b08-4320-ac68-a632ae0e7f9c"
       },
@@ -39,9 +47,12 @@
          "name" : "TurboTool",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/TurboShake.rend",
          "script" : {
-            "class" : "TurboTool",
-            "data" : {},
-            "file" : "$CONTENT_DATA/Scripts/toolScripts/TurboShakeTool.lua"
+            "class" : "SpeedTool",
+            "data" : {
+               "Factor" : 10.0,
+               "Type" : "turbo"
+            },
+            "file" : "$CONTENT_DATA/Scripts/SpeedTool.lua"
          },
          "uuid" : "d25a7b71-d250-4f57-b7ca-3806b05a1e46"
       },
@@ -50,20 +61,23 @@
          "name" : "ResetTool",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/ResetShake.rend",
          "script" : {
-            "class" : "ResetTool",
-            "data" : {},
-            "file" : "$CONTENT_DATA/Scripts/toolScripts/ResetShakeTool.lua"
+            "class" : "SpeedTool",
+            "data" : {
+               "Factor" : 1.0,
+               "Type" : "reset"
+            },
+            "file" : "$CONTENT_DATA/Scripts/SpeedTool.lua"
          },
          "uuid" : "33bc7095-1468-4b6e-8894-185ac1f2ae82"
       },
       {
          "autoTool" : true,
-         "name" : "backroundManager",
+         "name" : "backgroundManager",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/ResetShake.rend",
          "script" : {
             "class" : "Manager",
             "data" : {},
-            "file" : "$CONTENT_DATA/Scripts/toolScripts/Manager.lua"
+            "file" : "$CONTENT_DATA/Scripts/Manager.lua"
          },
          "uuid" : "2ffc1e51-dcea-4ae5-bd86-ca0330b6177f"
       }
