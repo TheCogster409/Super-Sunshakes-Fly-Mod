@@ -23,11 +23,14 @@ function FlyTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
 	if primary == sm.tool.interactState.start and not forceBuild then
 		self.clicked = true
 		local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
-		if json["alertTextEnabled"] then
+		if json.alertTextEnabled then
 			if character:isSwimming() then
 				sm.gui.displayAlertText("Your inner woc obeys Newton...", 2)
+				character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 2
 			else
 				sm.gui.displayAlertText("Your inner woc defies gravity...", 2)
+				print(character.clientPublicData.waterMovementSpeedFraction)
+				character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
 			end
 		end
 		self.network:sendToServer("server_startFly", character)
@@ -46,9 +49,9 @@ function FlyTool.server_startFly(self, character)
 		character:setDiving(not character:isDiving())
 	end
 	if character:isSwimming() then
-		character.publicData.waterMovementSpeedFraction = 8--character.publicData.waterMovementSpeedFraction * 2
+		character.publicData.waterMovementSpeedFraction = character.publicData.waterMovementSpeedFraction * 2
 	else
-		character.publicData.waterMovementSpeedFraction = 4--character.publicData.waterMovementSpeedFraction * 0.5
+		character.publicData.waterMovementSpeedFraction = character.publicData.waterMovementSpeedFraction * 0.5
 	end
 	print(character.publicData.waterMovementSpeedFraction)
 end

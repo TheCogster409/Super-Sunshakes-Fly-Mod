@@ -17,11 +17,11 @@ function Manager.client_onFixedUpdate(self)
 		end
 	end
 
-	--[[self.tick = self.tick + 1
+	self.tick = self.tick + 1
 	if self.tick == 80 then
 		self.tick = 0
 		self.network:sendToServer("server_saveData", {character, self.settings["playerUUID"]})
-	end]]
+	end
 	
 	return true, false
 end
@@ -36,7 +36,6 @@ function Manager.client_onCreate(self)
         Manager.instance = self
     end
 
-	--[[
 	if self.settings["playerUUID"] == nil then
 		self.settings["playerUUID"] = tostring(sm.uuid.new())
 		sm.json.save(self.settings, "$CONTENT_DATA/Scripts/settings.json")
@@ -45,7 +44,11 @@ function Manager.client_onCreate(self)
 	local stateData = sm.storage.load("stateData"..self.settings["playerUUID"])
 	if stateData ~= nil then
 		self.network:sendToServer("server_initState", {character, stateData})
-	end]]
+		character.clientPublicData.waterMovementSpeedFraction = stateData[3]
+	else
+		self.network:sendToServer("server_initState", {character, {false, false, 1}})
+		character.clientPublicData.waterMovementSpeedFraction = 1
+	end
 end
 
 function Manager.server_saveData(self, data)

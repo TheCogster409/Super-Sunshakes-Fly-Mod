@@ -26,11 +26,18 @@ function SpeedTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
 end
 
 function SpeedTool.client_sendText(self, factor)
+	local character = self.tool:getOwner().character
 	local messages = sm.json.open("$CONTENT_DATA/Scripts/messages.json")
 	if self.data["Factor"] == factor then
 		sm.gui.displayAlertText("Nothing happens...", 2)
 	else
 		sm.gui.displayAlertText(messages[tostring(self.data["Factor"] > factor)][self.data["Type"]], 2)
+	end
+
+	if character:isSwimming() then
+		character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 2
+	else
+		character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
 	end
 end
 
