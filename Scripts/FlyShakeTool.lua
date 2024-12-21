@@ -26,11 +26,11 @@ function FlyTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
 		if json.alertTextEnabled then
 			if character:isSwimming() then
 				sm.gui.displayAlertText("Your inner woc obeys Newton...", 2)
-				character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 2
+				character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
 			else
 				sm.gui.displayAlertText("Your inner woc defies gravity...", 2)
 				print(character.clientPublicData.waterMovementSpeedFraction)
-				character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
+				character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 2
 			end
 		end
 		self.network:sendToServer("server_startFly", character)
