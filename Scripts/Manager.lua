@@ -20,6 +20,7 @@ function Manager.client_onFixedUpdate(self)
 
 		self.tick = self.tick + 1
 		if self.tick == 80 then
+			--print(sm.storage.load("stateData"..self.settings["playerUUID"]))
 			self.tick = 0
 			self.network:sendToServer("server_saveData", {character, self.settings["playerUUID"]})
 		end
@@ -33,7 +34,6 @@ function Manager.client_onCreate(self)
 		self.settings = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
 		local character = self.tool:getOwner().character
 		local player = self.tool:getOwner()
-		self.network:sendToServer("server_stopFly", {character, player, true})
 		if not Manager.instance or Manager.instance ~= self then
     	    Manager.instance = self
     	end
@@ -42,16 +42,7 @@ function Manager.client_onCreate(self)
 			self.settings["playerUUID"] = tostring(sm.uuid.new())
 			sm.json.save(self.settings, "$CONTENT_DATA/Scripts/settings.json")
 		end
-
-		local stateData = sm.storage.load("stateData"..self.settings["playerUUID"])
-		print(stateData)
-		if stateData == nil then
-			self.network:sendToServer("server_initState", {character, {false, false, 1}})
-			character.clientPublicData.waterMovementSpeedFraction = 1
-		else
-			self.network:sendToServer("server_initState", {character, stateData})
-			character.clientPublicData.waterMovementSpeedFraction = stateData[3]
-		end
+		self.network:sendToServer("server_initState", {player, self.settings["playerUUID"], false})
 	end
 end
 
@@ -60,32 +51,46 @@ function Manager.server_saveData(self, data)
 end
 
 function Manager.server_initState(self, data)
-	data[1]:setSwimming(data[2][1])
-	data[1]:setDiving(data[2][2])
-	data[1].publicData.waterMovementSpeedFraction = data[2][3]
+	local character = data[1].character
+	local stateData = sm.storage.load("stateData"..data[2])
+	if stateData == nil then
+		stateData = {false, false, 1}
+	end
+	self.network:sendToClient(data[1], "client_initState", stateData[3])
+	character:setSwimming(stateData[1])
+	character:setDiving(stateData[2])
+	character.publicData.waterMovementSpeedFraction = stateData[3]
 end
 
-function Manager.server_stopFly(self, data)
-	if data[3] then
-		data[1].publicData.waterMovementSpeedFraction = 1
-	end
-	data[1]:setSwimming(false)
-	data[1]:setDiving(false)
-	data[1].publicData.waterMovementSpeedFraction = data[1].publicData.waterMovementSpeedFraction * 0.5
+function Manager.client_initState(self, fraction)
+	local character = self.tool:getOwner().character
+	character.clientPublicData.waterMovementSpeedFraction = fraction
+end
+
+function Manager.server_stopFly(self, character)
+	character:setSwimming(false)
+	character:setDiving(false)
+	character.publicData.waterMovementSpeedFraction = character.publicData.waterMovementSpeedFraction * 0.5
 end
 
 function Manager.server_Fly(self, params, caller)
 	local character = params["player"]:getCharacter()
-	self.network:sendToClient(params["player"], "client_Fly", {character:isSwimming()})
-    local factor = character.publicData.waterMovementSpeedFraction
-	if character:isDiving() then
-		factor = factor * 0.5	
+	local settings = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
+	if settings["flightMode"] == "normal" then
+		character:setDiving(not character:isDiving())
+		character:setSwimming(not character:isSwimming())
+	elseif settings["flightMode"] == "swim" then
+		character:setSwimming(not character:isSwimming())
 	else
-		factor = factor * 2
+		character:setDiving(not character:isDiving())
 	end
-	character:setDiving(not character:isDiving())
-	character:setSwimming(not character:isSwimming())
-	character.publicData.waterMovementSpeedFraction = factor
+	if character:isSwimming() then
+		character.publicData.waterMovementSpeedFraction = character.publicData.waterMovementSpeedFraction * 2
+	else
+		character.publicData.waterMovementSpeedFraction = character.publicData.waterMovementSpeedFraction * 0.5
+	end
+
+	self.network:sendToClient(params["player"], "client_Fly", {character:isSwimming()})
 end
 
 function Manager.client_FlightMode(self, params, caller)
@@ -107,6 +112,13 @@ function Manager.client_FlightMode(self, params, caller)
 end
 
 function Manager.client_Fly(self, data)
+	local character = self.tool:getOwner().character
+	if character:isSwimming() then
+		character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 2
+	else
+		character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
+	end
+
 	if self.settings["alertTextEnabled"] then
 		if data[1] then
 			sm.gui.displayAlertText("Your inner woc obeys Newton...", 2)
@@ -123,12 +135,18 @@ function Manager.server_Speed(self, params, caller)
 	else
 		character.publicData.waterMovementSpeedFraction = params[2]
 	end
-	self.network:sendToClient(params["player"], "client_Speed", params[2])
+	self.network:sendToClient(params["player"], "client_Speed", params)
 end
 
-function Manager.client_Speed(self, speed)
+function Manager.client_Speed(self, params)
+	local character = params["player"]:getCharacter()
+    if character:isSwimming() then
+		character.clientPublicData.waterMovementSpeedFraction = params[2]*2
+	else
+		character.clientPublicData.waterMovementSpeedFraction = params[2]
+	end
 	if self.settings["alertTextEnabled"] then
-		sm.gui.displayAlertText("Set speed to " .. speed .. "x", 2)
+		sm.gui.displayAlertText("Set speed to " .. params[2] .. "x", 2)
 	end
 end
 
