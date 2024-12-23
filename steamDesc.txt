@@ -1,11 +1,9 @@
 [i]Previous patch notes in the changelog tab at the top, beside comments.[/i]
 
-[b]edit: this update below isnt out yet. There were some multiplayer problems, but I don't want to redo description later.[/b]
-[b]A bit of everything update:[/b] [i](Dec 10th, 2024, 1.4)[/i]
-New command added - Look below
+[b]Preservative Update:[/b] [i](Dec 23d, 2024, 1.4)[/i]
 Speed is now preserved when toggling fly mode.
 Shakes now share one common script - Internal change, doesn't affect normal game.
-Diving - Up/Down speed is now affected by the speed shakes.
+Diving - Up/Down speed is now affected by the speed shakes. Particles do now appear, but they will be gone in a different way later.
 Preserved fly and speed - Fly mode and speed factor are both now preserved when leaving and rejoining a world.
 Updated alert text to make more sense - Before, going from Turbo to Speed said you gained speed, when that wasn't true. See the updated alert text here:
 
@@ -25,6 +23,7 @@ Other:
 "reset" : "The ResetShake™ returns your inner Woc to normal levels..."
 "blank" : "Nothing happens...." (this is when you use a shake twice in a row)
 
+These messages can be modified by going to the mod's folder and going into Scripts/messages.json and changing the text. Fly mode text is hard coded though.
 
 [hr][/hr] 
 

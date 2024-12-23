@@ -51,7 +51,7 @@ function SpeedTool.server_speedup(self, data)
 end
 
 ---------------------------------------------------------------------------
--- retros animation edit
+--[[ retros animation edit
 
 dofile "$GAME_DATA/Scripts/game/AnimationUtil.lua"
 dofile "$SURVIVAL_DATA/Scripts/util.lua"
@@ -276,12 +276,12 @@ function SpeedTool.cl_updateEatRenderables( self )
 	for k,v in pairs( animationRenderablesFp ) do currentRenderablesFp[#currentRenderablesFp+1] = v end
 
 	self.emptyTpRenderables = shallowcopy( animationRenderablesTp )
-	self.emptyFpRenderables = shallowcopy( animationRenderablesFp )
+	self.emptyFpRenderables = shallowcopy( animationRenderablesFp )]]
 
-	for k,v in pairs( typeToShake[self.data["Type"]] ) do currentRenderablesTp[#currentRenderablesTp+1] = v end
-	for k,v in pairs( typeToShake[self.data["Type"]] ) do currentRenderablesFp[#currentRenderablesFp+1] = v end
+	--for k,v in pairs( typeToShake[self.data["Type"]] ) do currentRenderablesTp[#currentRenderablesTp+1] = v end
+	--for k,v in pairs( typeToShake[self.data["Type"]] ) do currentRenderablesFp[#currentRenderablesFp+1] = v end
 	
-	self.tool:setTpRenderables( currentRenderablesTp )
+	--[[self.tool:setTpRenderables( currentRenderablesTp )
 	if self.tool:isLocal() then
 		self.tool:setFpRenderables( currentRenderablesFp )
 	end
@@ -299,4 +299,4 @@ function SpeedTool.client_onUnequip( self )
 
 	self.wantEquipped = false
 	self.equipped = false
-end
+end]]

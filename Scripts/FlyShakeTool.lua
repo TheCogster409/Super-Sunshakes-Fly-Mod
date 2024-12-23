@@ -57,7 +57,7 @@ function FlyTool.server_startFly(self, character)
 end
 
 ---------------------------------------------------------------------------
--- retros animation edit
+--[[ retros animation edit
 
 dofile "$GAME_DATA/Scripts/game/AnimationUtil.lua"
 dofile "$SURVIVAL_DATA/Scripts/util.lua"
@@ -292,4 +292,4 @@ function FlyTool.client_onUnequip( self )
 
 	self.wantEquipped = false
 	self.equipped = false
-end
+end]]

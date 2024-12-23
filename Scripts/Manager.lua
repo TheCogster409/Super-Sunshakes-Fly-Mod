@@ -93,21 +93,30 @@ function Manager.server_Fly(self, params, caller)
 	self.network:sendToClient(params["player"], "client_Fly", {character:isSwimming()})
 end
 
-function Manager.client_FlightMode(self, params, caller)
+-- Command not implemented yet
+function Manager.server_FlightMode(self, data)
+	if data[1] == "normal" then
+		data[2]:setDiving(data[2]:isSwimming())
+		data[2]:setSwimming(data[2]:isDiving())
+	elseif data[1] == "swim" then
+		data[2]:setSwimming(data[2]:isDiving())
+		data[2]:setDiving(false)
+	else
+		data[2]:setDiving(data[2]:isSwimming())
+		data[2]:setSwimming(false)
+	end
+end
+
+function Manager.server_StupidAssCommandFix(self, params, caller)
+	self.network:sendToClient(params["player"], "client_FlightMode", params)
+end
+
+function Manager.client_FlightMode(self, params)
 	local character = params["player"]:getCharacter()
 	if params[2] == "normal" or params[2] == "swim" or params[2] == "dive" then
 		self.settings["flightMode"] = params[2]
 		sm.json.save(self.settings, "$CONTENT_DATA/Scripts/settings.json")
-		if self.settings["flightMode"] == "normal" then
-			character:setDiving(character:isSwimming())
-			character:setSwimming(character:isDiving())
-		elseif self.settings["flightMode"] == "swim" then
-			character:setSwimming(character:isDiving())
-			character:setDiving(false)
-		else
-			character:setDiving(character:isSwimming())
-			character:setSwimming(false)
-		end
+		self.network:sendToServer("server_FlightMode", {self.settings["flightMode"], character})
 	end
 end
 
@@ -148,6 +157,10 @@ function Manager.client_Speed(self, params)
 	if self.settings["alertTextEnabled"] then
 		sm.gui.displayAlertText("Set speed to " .. params[2] .. "x", 2)
 	end
+end
+
+function Manager.server_ToggleAlertText(self, params, caller)
+	self.network:sendToClient(params["player"], "client_ToggleAlertText", params)
 end
 
 function Manager.client_ToggleAlertText(self, params, caller)
@@ -197,9 +210,9 @@ function sm.event.sendToWorld(world, callback, params)
         	sm.event.sendToTool(Manager.instance.tool, "server_Speed", params)
 		end
 	elseif params[1] == "/shakeAlertText" then
-        sm.event.sendToTool(Manager.instance.tool, "client_ToggleAlertText", params)
-    elseif params[1] == "/flightMode" then
-        sm.event.sendToTool(Manager.instance.tool, "client_FlightMode", params)
+        sm.event.sendToTool(Manager.instance.tool, "server_ToggleAlertText", params)
+    --elseif params[1] == "/flightMode" then		coommented out because command not in yet
+    --    sm.event.sendToTool(Manager.instance.tool, "server_StupidAssCommandFix", params)
     else
         oldWorldEvent(world, callback, params)
     end
