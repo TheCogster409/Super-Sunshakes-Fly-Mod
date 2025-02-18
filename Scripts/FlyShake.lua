@@ -22,13 +22,13 @@ FlyShake = class()
 		end
 		character.publicData.waterMovementSpeedFraction = factor
 		local settings = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
-		--[[if settings["flightMode"] == "normal" then
+		if settings["flightMode"] == "normal" then
 			character:setDiving(not character:isDiving())
 			character:setSwimming(not character:isSwimming())
 		elseif settings["flightMode"] == "swim" then
 			character:setSwimming(not character:isSwimming())
 		else
 			character:setDiving(not character:isDiving())
-		end]]
+		end
 		self.shape:destroyShape()
   end

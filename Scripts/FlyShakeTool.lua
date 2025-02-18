@@ -18,10 +18,9 @@ function FlyTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
 		sm.gui.setInteractionText("", primaryBind, "Start Flying")
 		sm.gui.setInteractionText("", forceBind, "Force Build")
 	end
-	
+
 
 	if primary == sm.tool.interactState.start and not forceBuild then
-		self.clicked = true
 		local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
 		if json.alertTextEnabled then
 			if character:isSwimming() then
@@ -57,7 +56,7 @@ function FlyTool.server_startFly(self, character)
 end
 
 ---------------------------------------------------------------------------
---[[ retros animation edit
+-- retros animation edit
 
 dofile "$GAME_DATA/Scripts/game/AnimationUtil.lua"
 dofile "$SURVIVAL_DATA/Scripts/util.lua"
@@ -292,4 +291,4 @@ function FlyTool.client_onUnequip( self )
 
 	self.wantEquipped = false
 	self.equipped = false
-end]]
+end

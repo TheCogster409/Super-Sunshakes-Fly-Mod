@@ -12,7 +12,8 @@ function Manager.client_onFixedUpdate(self)
 	if self.tool:isLocal() then
 		local character = self.tool:getOwner().character
 		if not sm.localPlayer.getCarry():isEmpty() and character:isSwimming() then
-			self.network:sendToServer("server_stopFly", {character, self.tool:getOwner()})
+			character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
+			self.network:sendToServer("server_stopFly", character)
 			if self.settings["alertTextEnabled"] then
 				sm.gui.displayAlertText("Picking up containers while flying will get you stuck! You aren't flying now.", 5)
 			end
@@ -37,6 +38,10 @@ function Manager.client_onCreate(self)
 		if not Manager.instance or Manager.instance ~= self then
     	    Manager.instance = self
     	end
+
+        if character.clientPublicData.waterMovementSpeedFraction == nil then
+            character.clientPublicData.waterMovementSpeedFraction = 1
+        end
 
 		if self.settings["playerUUID"] == nil then
 			self.settings["playerUUID"] = tostring(sm.uuid.new())
@@ -211,8 +216,8 @@ function sm.event.sendToWorld(world, callback, params)
 		end
 	elseif params[1] == "/shakeAlertText" then
         sm.event.sendToTool(Manager.instance.tool, "server_ToggleAlertText", params)
-    --elseif params[1] == "/flightMode" then		coommented out because command not in yet
-    --    sm.event.sendToTool(Manager.instance.tool, "server_StupidAssCommandFix", params)
+    elseif params[1] == "/flightMode" then
+        sm.event.sendToTool(Manager.instance.tool, "server_StupidAssCommandFix", params)
     else
         oldWorldEvent(world, callback, params)
     end

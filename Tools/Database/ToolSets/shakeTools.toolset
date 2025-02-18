@@ -4,7 +4,6 @@
          "autoTool" : true,
          "name" : "FlyTool",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/char_eattool_sunshake.rend",
-         "previewRotation" : [ 1, 0, 0, 0, 0, -1, 0, 1, 0 ],
          "script" : {
             "class" : "FlyTool",
             "data" : {
@@ -80,6 +79,17 @@
             "file" : "$CONTENT_DATA/Scripts/Manager.lua"
          },
          "uuid" : "2ffc1e51-dcea-4ae5-bd86-ca0330b6177f"
+      },
+      {
+         "autoTool" : true,
+         "name" : "Silver SunShake",
+         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/SilverShake.rend",
+         "script" : {
+            "class" : "Silver",
+            "data" : {},
+            "file" : "$CONTENT_DATA/Scripts/SilverShakeTool.lua"
+         },
+         "uuid" : "56373b4f-5c38-401d-badd-758fac4913e8"
       }
    ]
 }

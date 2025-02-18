@@ -7,7 +7,7 @@
             "axis" : "Y",
             "depth" : 1,
             "diameter" : 1,
-            "margin" : 0.040
+            "margin" : 0
          },
          "flammable" : true,
          "name" : "FlyShake",
@@ -41,7 +41,7 @@
             "axis" : "Y",
             "depth" : 1,
             "diameter" : 1,
-            "margin" : 0.040
+            "margin" : 0
          },
          "flammable" : true,
          "name" : "SpeedShake",
@@ -76,7 +76,7 @@
             "axis" : "Y",
             "depth" : 1,
             "diameter" : 1,
-            "margin" : 0.040
+            "margin" : 0
          },
          "flammable" : true,
          "name" : "SlowShake",
@@ -95,7 +95,7 @@
          "scripted" : {
             "classname" : "Speed",
             "data" : {
-               "Factor" : 0.5,
+               "Factor" : 0.50,
                "Type" : "slow"
             },
             "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
@@ -111,7 +111,7 @@
             "axis" : "Y",
             "depth" : 1,
             "diameter" : 1,
-            "margin" : 0.040
+            "margin" : 0
          },
          "flammable" : true,
          "name" : "TurboShake",
@@ -130,7 +130,7 @@
          "scripted" : {
             "classname" : "Speed",
             "data" : {
-               "Factor" : 10.0,
+               "Factor" : 10,
                "Type" : "turbo"
             },
             "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
@@ -146,7 +146,7 @@
             "axis" : "Y",
             "depth" : 1,
             "diameter" : 1,
-            "margin" : 0.040
+            "margin" : 0
          },
          "flammable" : true,
          "name" : "ResetShake",
@@ -175,27 +175,26 @@
          "uuid" : "f4f4c787-2fb7-4c05-b6fd-f088400c3b1d"
       },
       {
-         "cylinder" : {
+        "autoTool" : "56373b4f-5c38-401d-badd-758fac4913e8", 
+        "cylinder" : {
             "axis" : "Y",
             "depth" : 1,
             "diameter" : 1,
-            "margin" : 0.040
+            "margin" : 0
          },
-         "name" : "Golden Sunshake",
+         "name" : "Silver Sunshake",
          "physicsMaterial" : "Metal",
          "ratings" : {
-            "buoyancy" : 5,
+            "buoyancy" : 2,
             "density" : 10,
-            "durability" : 5,
-            "friction" : 2
+            "durability" : 9,
+            "friction" : 1
          },
-         "renderable" : "$CONTENT_DATA/Objects/Renderable/GoldenShake.rend",
-         "restrictions" : {
-            "erasable" : true
-         },
+         "renderable" : "$CONTENT_DATA/Objects/Renderable/SilverShake.rend",
          "rotationSet" : "PropY",
+         "showInInventory" : true,
          "sticky" : "-Y",
-         "uuid" : "f1a78dcd-b85d-4dea-b826-dfce4892ec49"
+         "uuid" : "211a771b-6aa5-40c7-bf65-d743946656fe"
       }
    ]
 }

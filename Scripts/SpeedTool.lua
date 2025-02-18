@@ -2,9 +2,9 @@ SpeedTool = class()
 
 function SpeedTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
 	local character = self.tool:getOwner().character
-	print(character.clientPublicData.waterMovementSpeedFraction)
 	local primaryBind = sm.gui.getKeyBinding("Create", true)
 	local forceBind = sm.gui.getKeyBinding("ForceBuild", true)
+	print(character.clientPublicData.waterMovementSpeedFraction)
 
 	if forceBuild then
 		sm.gui.setInteractionText("", primaryBind, "Place")
@@ -23,12 +23,12 @@ function SpeedTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
 			factor = factor * 0.5
 		end
 		local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
-		print(factor)
 		if character:isSwimming() then
 			character.clientPublicData.waterMovementSpeedFraction = self.data["Factor"] * 2
 		else
 			character.clientPublicData.waterMovementSpeedFraction = self.data["Factor"]
 		end
+		print(self.tool:getOwner().id)
 
 		if json["alertTextEnabled"] then
 			local messages = sm.json.open("$CONTENT_DATA/Scripts/messages.json")
@@ -51,7 +51,7 @@ function SpeedTool.server_speedup(self, data)
 end
 
 ---------------------------------------------------------------------------
---[[ retros animation edit
+-- retros animation edit
 
 dofile "$GAME_DATA/Scripts/game/AnimationUtil.lua"
 dofile "$SURVIVAL_DATA/Scripts/util.lua"
@@ -276,12 +276,12 @@ function SpeedTool.cl_updateEatRenderables( self )
 	for k,v in pairs( animationRenderablesFp ) do currentRenderablesFp[#currentRenderablesFp+1] = v end
 
 	self.emptyTpRenderables = shallowcopy( animationRenderablesTp )
-	self.emptyFpRenderables = shallowcopy( animationRenderablesFp )]]
+	self.emptyFpRenderables = shallowcopy( animationRenderablesFp )
 
-	--for k,v in pairs( typeToShake[self.data["Type"]] ) do currentRenderablesTp[#currentRenderablesTp+1] = v end
-	--for k,v in pairs( typeToShake[self.data["Type"]] ) do currentRenderablesFp[#currentRenderablesFp+1] = v end
+	for k,v in pairs( typeToShake[self.data["Type"]] ) do currentRenderablesTp[#currentRenderablesTp+1] = v end
+	for k,v in pairs( typeToShake[self.data["Type"]] ) do currentRenderablesFp[#currentRenderablesFp+1] = v end
 	
-	--[[self.tool:setTpRenderables( currentRenderablesTp )
+	self.tool:setTpRenderables( currentRenderablesTp )
 	if self.tool:isLocal() then
 		self.tool:setFpRenderables( currentRenderablesFp )
 	end
@@ -299,4 +299,4 @@ function SpeedTool.client_onUnequip( self )
 
 	self.wantEquipped = false
 	self.equipped = false
-end]]
+end
