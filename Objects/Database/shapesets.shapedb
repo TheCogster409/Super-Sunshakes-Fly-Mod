@@ -1,3 +1,6 @@
 {
-   "shapeSetList" : [ "$CONTENT_DATA/Objects/Database/ShapeSets/shakes.shapeset" ]
+   "shapeSetList" : [
+      "$CONTENT_DATA/Objects/Database/ShapeSets/otherParts.shapeset",
+      "$CONTENT_DATA/Objects/Database/ShapeSets/shakes.shapeset"
+   ]
 }

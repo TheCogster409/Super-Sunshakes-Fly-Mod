@@ -1,43 +1,47 @@
-FlyTool = class()
+FlyShakeTool = class()
 
-function FlyTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
+function FlyShakeTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
 	local character = self.tool:getOwner().character
 
 	local primaryBind = sm.gui.getKeyBinding("Create", true)
 	local forceBind = sm.gui.getKeyBinding("ForceBuild", true)
+
+    -- Stop drink animation
+    self:clientStopDrinkingAnimation()
 
 	if forceBuild then
 		sm.gui.setInteractionText("", primaryBind, "Place")
 		return false, false
 	end
 
-	if character:isSwimming() then
-		sm.gui.setInteractionText("", primaryBind, "Stop Flying")
-		sm.gui.setInteractionText("", forceBind, "Force Build")
-	else
-		sm.gui.setInteractionText("", primaryBind, "Start Flying")
-		sm.gui.setInteractionText("", forceBind, "Force Build")
-	end
-
+    sm.gui.setInteractionText("", primaryBind, (character:isSwimming() or character:isDiving()) and "Drink FlyShake™ And Obey Newton" or "Drink FlyShake™ And Defy Gravity")
+    sm.gui.setInteractionText("", forceBind, "Force Build")
 
 	if primary == sm.tool.interactState.start and not forceBuild then
 		local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
 		if json.alertTextEnabled then
 			if character:isSwimming() then
 				sm.gui.displayAlertText("Your inner woc obeys Newton...", 2)
-				character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
 			else
 				sm.gui.displayAlertText("Your inner woc defies gravity...", 2)
-				print(character.clientPublicData.waterMovementSpeedFraction)
-				character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 2
 			end
 		end
-		self.network:sendToServer("server_startFly", character)
-	end
+        if character:isSwimming() then
+            character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
+        else
+            character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 2
+        end
+
+        -- Start drink animation
+        self.tool:setBlockSprint(true)
+        self.wantDrink = 5
+        self.network:sendToServer("server_startFly", character)
+    end
+    --print(self.equipped, self.wantEquipped)
 	return true, false
 end
 
-function FlyTool.server_startFly(self, character)
+function FlyShakeTool.server_startFly(self, character)
 	local settings = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
 	if settings["flightMode"] == "normal" then
 		character:setDiving(not character:isDiving())
@@ -52,42 +56,93 @@ function FlyTool.server_startFly(self, character)
 	else
 		character.publicData.waterMovementSpeedFraction = character.publicData.waterMovementSpeedFraction * 0.5
 	end
-	print(character.publicData.waterMovementSpeedFraction)
 end
 
----------------------------------------------------------------------------
--- retros animation edit
+------------------------------------------------------------------------------------
+--  \/ Animations Below \/ (Coded mostly by Retro Dogo, thanks to him!)
+------------------------------------------------------------------------------------
 
 dofile "$GAME_DATA/Scripts/game/AnimationUtil.lua"
 dofile "$SURVIVAL_DATA/Scripts/util.lua"
 
-local FlyShakeRenderable = { "$MOD_DATA/Objects/Renderable/FlyShake.rend" }
+local FlyShakeRenderable = { "$MOD_DATA/Objects/Renderable/Tools/FlyShake.rend" }
 
-function FlyTool.client_onCreate( self )
+local RenderablesEattoolTp = { "$SURVIVAL_DATA/Character/Char_Male/Animations/char_male_tp_eattool.rend", "$SURVIVAL_DATA/Character/Char_Tools/Char_eattool/char_eattool_tp.rend" }
+local RenderablesEattoolFp = { "$SURVIVAL_DATA/Character/Char_Male/Animations/char_male_fp_eattool.rend", "$SURVIVAL_DATA/Character/Char_Tools/Char_eattool/char_eattool_fp.rend" }
+
+function FlyShakeTool.client_onCreate( self )
 	self.tpAnimations = createTpAnimations( self.tool, {} )
 	if self.tool:isLocal() then
 		self.fpAnimations = createFpAnimations( self.tool, {} )
 	end
 
 	self.activeItem = sm.uuid.getNil()
+    self.drinkEffectTp = sm.effect.createEffect( "Eat - Drink" )
+    self.drinkEffectTp:setPosition( self.tool:getTpBonePos( "jnt_head" ) )
+	self.drinkEffectTp:setRotation( sm.vec3.getRotation( sm.vec3.new( 0, 1, 0 ), self.tool:getTpBoneDir( "jnt_head" ) ) )
+    self.drinkEffectAudio = sm.effect.createEffect( "Eat - DrinkSound" )
+    self.drinkEffectAudio:setPosition( self.tool:getTpBonePos( "jnt_head" ) )
+    self.drinking = false
 end
 
-function FlyTool.client_onRefresh( self )
+function FlyShakeTool.client_startDrinkingAnimation(self)
+    if shakeAnimationsEnabled and not self.drinking then
+        self.drinking = true
+        self.drinkProgress = 0
+        self.drinkEffectAudio:start()
+    
+        if self.tool:isLocal() then
+            setFpAnimation( self.fpAnimations, "drink", 0.25 )
+        end
+        setTpAnimation( self.tpAnimations, "drink", 10.0 )
+        if not self.tool:isInFirstPersonView() then
+            self.drinkEffectTp:start()
+            self.drinkEffectTp:setPosition( self.tool:getTpBonePos( "jnt_head" ) )
+            self.drinkEffectTp:setRotation( sm.vec3.getRotation( sm.vec3.new( 0, 1, 0 ), self.tool:getTpBoneDir( "jnt_head" ) ) )
+        end
+    end
+end
+
+function FlyShakeTool.clientStopDrinkingAnimation(self)
+    if self.drinkProgress == nil then
+        self.drinkProgress = 0
+    elseif self.drinkProgress >= 20 then
+        self.tool:setBlockSprint(false)
+        self.drinkProgress = 0
+        self.drinking = false
+		self.drinkEffectAudio:stop()
+        self.drinkEffectTp:stop()
+
+        if self.tool:isLocal() then
+            setFpAnimation( self.fpAnimations, "idle", 0.25 )
+        end
+        setTpAnimation( self.tpAnimations, "idle", 10.0 )
+    end
+end
+
+function FlyShakeTool.client_onFixedUpdate(self)
+    if self.drinking == true then
+        self.drinkProgress = self.drinkProgress + 1
+    end
+end
+
+function FlyShakeTool.client_onRefresh( self )
 	self:cl_updateActiveFood()
 end
 
-function FlyTool.client_onClientDataUpdate( self, clientData )
+function FlyShakeTool.client_onClientDataUpdate( self, clientData )
 	if not self.tool:isLocal() then
 		self.desiredActiveItem = clientData.activeUid
 	end
 end
 
-function FlyTool.cl_loadAnimations( self )
+function FlyShakeTool.cl_loadAnimations( self )
 
 	self.tpAnimations = createTpAnimations(
 			self.tool,
 			{
 				idle = { "Idle" },
+                drink = { "Drink" },
 				sprint = { "Sprint_fwd" },
 				pickup = { "Pickup", { nextAnimation = "idle" } },
 				putdown = { "Putdown" }
@@ -126,6 +181,8 @@ function FlyTool.cl_loadAnimations( self )
 				{
 					idle = { "Idle", { looping = true } },
 					
+                    drink = { "Drink" },
+
 					sprintInto = { "Sprint_into", { nextAnimation = "sprintIdle",  blendNext = 0.2 } },
 					sprintIdle = { "Sprint_idle", { looping = true } },
 					sprintExit = { "Sprint_exit", { nextAnimation = "idle",  blendNext = 0 } },
@@ -143,7 +200,29 @@ function FlyTool.cl_loadAnimations( self )
 end
 
 
-function FlyTool.client_onUpdate( self, dt )
+function FlyShakeTool.client_onUpdate( self, dt )
+    if self.lastShakeAnimationState ~= shakeAnimationsEnabled then
+        self.lastShakeAnimationState = shakeAnimationsEnabled
+        self:cl_updateActiveFood()
+    end
+    
+    if not shakeAnimationsEnabled then
+        self.equipped = false
+        self.wantEquipped = false
+        return
+    end
+
+    if self.wantDrink ~= nil and self.wantDrink > 0 then -- We need to wait 5 frames to play drinking animation when toggling fly mode, otherwise it doesnt play
+        self.wantDrink = self.wantDrink - 1
+        if self.wantDrink == 0 then
+            self:client_startDrinkingAnimation()
+        end
+    end
+
+    if not self.equipped then
+        self.tool:setBlockSprint(false)
+    end
+
 	-- First person animation
 	local isSprinting =  self.tool:isSprinting()
 	local isCrouching =  self.tool:isCrouching()
@@ -156,12 +235,13 @@ function FlyTool.client_onUpdate( self, dt )
 			elseif not self.tool:isSprinting() and ( self.fpAnimations.currentAnimation == "sprintIdle" or self.fpAnimations.currentAnimation == "sprintInto" ) then
 				swapFpAnimation( self.fpAnimations, "sprintInto", "sprintExit", 0.0 )
 			end
-			if not isOnGround and self.wasOnGround and self.fpAnimations.currentAnimation ~= "jump" then
+			if not isOnGround and self.wasOnGround and self.fpAnimations.currentAnimation ~= "jump" and not self.drinking then
 				swapFpAnimation( self.fpAnimations, "land", "jump", 0.02 )
-			elseif isOnGround and not self.wasOnGround and self.fpAnimations.currentAnimation ~= "land" then
+			elseif isOnGround and not self.wasOnGround and self.fpAnimations.currentAnimation ~= "land" and not self.drinking then
 				swapFpAnimation( self.fpAnimations, "jump", "land", 0.02 )
-			end
+            end
 		end
+
 		updateFpAnimations( self.fpAnimations, self.equipped, dt )
 
 		self.wasOnGround = isOnGround
@@ -226,7 +306,7 @@ function FlyTool.client_onUpdate( self, dt )
 	
 end
 
-function FlyTool.client_onEquip( self, animate )
+function FlyShakeTool.client_onEquip( self, animate )
 	if self.tool:isLocal() then
 		self.activeItem = sm.localPlayer.getActiveItem()
 		self:cl_updateActiveFood()
@@ -240,7 +320,7 @@ function FlyTool.client_onEquip( self, animate )
 	self.wantEquipped = true
 end
 
-function FlyTool.cl_updateActiveFood( self )
+function FlyShakeTool.cl_updateActiveFood( self )
 	self:cl_updateEatRenderables()
 	self:cl_loadAnimations()
 	if self.activeItem == nil or self.activeItem == sm.uuid.getNil() then
@@ -256,10 +336,10 @@ function FlyTool.cl_updateActiveFood( self )
 	end
 end
 
-function FlyTool.cl_updateEatRenderables( self )
+function FlyShakeTool.cl_updateEatRenderables( self )
 	
-	local animationRenderablesTp = { "$SURVIVAL_DATA/Character/Char_Male/Animations/char_male_tp_eattool.rend", "$SURVIVAL_DATA/Character/Char_Tools/Char_eattool/char_eattool_tp.rend" }
-	local animationRenderablesFp = { "$SURVIVAL_DATA/Character/Char_Male/Animations/char_male_fp_eattool.rend", "$SURVIVAL_DATA/Character/Char_Tools/Char_eattool/char_eattool_fp.rend" }
+	local animationRenderablesTp = RenderablesEattoolTp
+	local animationRenderablesFp = RenderablesEattoolFp
 
 	local currentRenderablesTp = {}
 	local currentRenderablesFp = {}
@@ -273,19 +353,19 @@ function FlyTool.cl_updateEatRenderables( self )
 	for k,v in pairs( FlyShakeRenderable ) do currentRenderablesTp[#currentRenderablesTp+1] = v end
 	for k,v in pairs( FlyShakeRenderable ) do currentRenderablesFp[#currentRenderablesFp+1] = v end
 	
-	self.tool:setTpRenderables( currentRenderablesTp )
+	self.tool:setTpRenderables(shakeAnimationsEnabled and currentRenderablesTp or self.emptyTpRenderables)
 	if self.tool:isLocal() then
-		self.tool:setFpRenderables( currentRenderablesFp )
+		self.tool:setFpRenderables(shakeAnimationsEnabled and currentRenderablesFp or self.emptyFpRenderables)
 	end
 end
 
-function FlyTool.client_onUnequip( self )
-	self.eating = false
+function FlyShakeTool.client_onUnequip( self )
+	self.drinking = false
 	self.activeItem = sm.uuid.getNil()
 	if sm.exists( self.tool ) then
 		self:cl_updateActiveFood()
 		if self.tool:isLocal() then
-			self.eatProgress = 0
+			self.drinkProgress = 0
 		end
 	end
 

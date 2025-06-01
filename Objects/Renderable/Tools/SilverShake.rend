@@ -1,0 +1,17 @@
+{
+   "lodList" : [
+      {
+         "mesh" : "$CONTENT_DATA/Objects/Mesh/ShakeTool.dae",
+         "subMeshList" : [
+            {
+               "material" : "DifAsgNor",
+               "textureList" : [
+                  "$CONTENT_DATA/Objects/Textures/New/silvershake_dif.png",
+                  "$CONTENT_DATA/Objects/Textures/New/silvershake_asg.png",
+                  "$CONTENT_DATA/Objects/Textures/New/silvershake_nor.png"
+               ]
+            }
+         ]
+      }
+   ]
+}

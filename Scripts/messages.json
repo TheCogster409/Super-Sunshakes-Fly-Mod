@@ -1,17 +1,17 @@
 
 {
 	"true" : {
-        "fly" : "Your inner woc defies gravity...", // fly is unused
+        "fly" : "Your inner woc defies gravity...",
         "speed" : "The SpeedShake™ charges up the inner Woc inside you...",
-        "slow" : "The SlowShake™ charges your up your inner woc, but it still isn't strong...",
+        "slow" : "The SlowShake™ charges up your inner woc, but it still isn't strong...",
         "turbo" : "The TurboShake™ charges up your inner Woc to extreme levels...",
-        "reset" : "The ResetShake™ returns your inner Woc to normal levels..."
+        "reset" : "Your inner woc charges up back to normal levels..."
     },
     "false" : {
         "fly" : "Your inner woc obeys Newton...",
-        "speed" : "The SpeedShake™ calms your inner woc down, but not fully...",
-        "slow" : "The SlowShake™ discharges your inner Woc beyond comprehension...",
-        "turbo" : "The TurboShake™ dampens your inner woc, but it is still highly active...",
-        "reset" : "The ResetShake™ returns your inner Woc to normal levels..."
+        "speed" : "The SpeedShake™ calms down your inner woc down, but not fully...",
+        "slow" : "The SlowShake™ calms down your inner Woc beyond comprehension...",
+        "turbo" : "The TurboShake™ calms down your inner woc, but it is still highly active...",
+        "reset" : "Your inner woc calms down back to normal levels..."
     }
 }

@@ -1,0 +1,18 @@
+{
+    "lodList" : [
+       {
+          "mesh" : "$CONTENT_DATA/Objects/Mesh/ShakeTool.dae",
+          "subMeshList" : [
+             {
+                "material" : "DifAsgNor",
+                "textureList" : [
+                   "$CONTENT_DATA/Objects/Textures/New/slowshake_dif.png",
+                   "$CONTENT_DATA/Objects/Textures/New/shake_asg.png",
+                   "$CONTENT_DATA/Objects/Textures/New/shake_nor.png"
+                ]
+             }
+          ]
+       }
+    ]
+ }
+ 

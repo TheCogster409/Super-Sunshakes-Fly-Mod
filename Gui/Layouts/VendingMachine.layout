@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="LogicGateBG" position="420 175 1080 600" name="MainPanel">
+        <Property key="NeedKey" value="false"/>
+        <Property key="NeedMouse" value="true"/>
+        <Property key="InheritsAlpha" value="false"/>
+        <Widget type="TextBox" skin="TextBox" position="0 20 1080 100">
+            <Property key="FontName" value="SM_HeaderLarge_Wide"/>
+            <Property key="TextAlign" value="Center"/>
+            <Property key="NeedKey" value="false"/>
+            <Property key="NeedMouse" value="false"/>
+            <Property key="Caption" value="S U P E R   S U N S H A K E\nV E N D I N G   M A C H I N E"/>
+        </Widget>
+        <Widget type="Button" skin="LogicGateButtons" position="468 179 143 143" name="SlowShakeButton">
+            <Property key="FontName" value="SM_ButtonSmall"/>
+            <Property key="Caption" value="SLOW SHAKE"/>
+            <Property key="TextAlign" value="Center"/>
+            <Widget type="ImageBox" skin="ImageBox" position="36 36 71 71" name="SlowShakeIcon">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+            </Widget>
+        </Widget>
+        <Widget type="Button" skin="LogicGateButtons" position="166 179 143 143" align="Right Top" name="FlyShakeButton">
+            <Property key="FontName" value="SM_ButtonSmall"/>
+            <Property key="Caption" value="FLY SHAKE"/>
+            <Property key="TextAlign" value="Center"/>
+            <Widget type="ImageBox" skin="ImageBox" position="36 36 71 71" name="FlyShakeIcon">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+                <Property key="ImageResource" value="FlyShakeIcon"/>
+                <Property key="ImageName" value="FlyShakeIcon"/>
+                <Property key="ImageGroup" value="FlyShakeIcon"/>
+            </Widget>
+        </Widget>
+        <Widget type="Button" skin="LogicGateButtons" position="317 179 143 143" name="SpeedShakeButton">
+            <Property key="FontName" value="SM_ButtonSmall"/>
+            <Property key="Caption" value="SPEED SHAKE"/>
+            <Property key="TextAlign" value="Center"/>
+            <Widget type="ImageBox" skin="ImageBox" position="36 36 71 71" name="SpeedShakeIcon">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+            </Widget>
+        </Widget>
+        <Widget type="Button" skin="LogicGateButtons" position="619 179 143 143" name="TurboShakeButton">
+            <Property key="FontName" value="SM_ButtonSmall"/>
+            <Property key="Caption" value="TURBO SHAKE"/>
+            <Property key="TextAlign" value="Center"/>
+            <Widget type="ImageBox" skin="ImageBox" position="36 36 71 71" name="TurboShakeIcon">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+            </Widget>
+        </Widget>
+        <Widget type="Button" skin="LogicGateButtons" position="770 179 143 143" name="ResetShakeButton">
+            <Property key="FontName" value="SM_ButtonSmall"/>
+            <Property key="Caption" value="RESET SHAKE"/>
+            <Property key="TextAlign" value="Center"/>
+            <Widget type="ImageBox" skin="ImageBox" position="36 36 71 71" name="ResetShakeIcon">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+            </Widget>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="315 120 450 59">
+            <Property key="Caption" value="How about super #2CE6E6udd#ffffffrink?"/>
+            <Property key="FontName" value="X_Interactable_LogicGate_Category"/>
+            <Property key="TextAlign" value="Center"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="57 375 628 200" name="DescriptionText">
+            <Property key="FontName" value="SM_TextSmall"/>
+            <Property key="Caption" value="Super SunShakes™ allow you to speed up, slow down, and FLY! Creations Of\nGreatness Incorporated, LLC is not responsible for any harm done to the\nconsumer. Contains minimal lead, time juice, and [ S I N G U L A R I T Y ].\nSuper SunShakes™ do indeed contain an infinite amount of drink. All fluid will\nteleport into your mouth to protect the miniature black hole inside the\ncanister. The canister is not openable and doing so may result in the total and\ncomplete destruction of the woc-time continuum. Super SunShakes™ are\ncomplimentary and only cost your soul to be used in the fight against\ncommunism and the forbidden SusShake™."/>
+        </Widget>
+        <Widget type="Widget" skin="WhiteSkin" position_real="0.050000000000000003 0.58499999999999996 0.90277777777777779 0">
+            <Property key="Alpha" value="0.25"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="745 380 285 200" name="CopyrightText">
+            <Property key="FontName" value="SM_TextTiny"/>
+            <Property key="Caption" value="Copyright © 2662 Creations Of Greatness Incorporated, LLC"/>
+            <Property key="TextAlign" value="Right Bottom"/>
+            <Property key="FontHeight" value="12"/>
+        </Widget>
+        <Widget type="Widget" skin="WhiteSkin" position="54 351 975 1">
+            <Property key="Alpha" value="0.25"/>
+        </Widget>
+    </Widget>
+    <CodeGeneratorSettings/>
+</MyGUI>

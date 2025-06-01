@@ -3,9 +3,9 @@
       {
          "autoTool" : true,
          "name" : "FlyTool",
-         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/char_eattool_sunshake.rend",
+         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/FlyShake.rend",
          "script" : {
-            "class" : "FlyTool",
+            "class" : "FlyShakeTool",
             "data" : {
                "Type" : "fly"
             },
@@ -18,12 +18,12 @@
          "name" : "SpeedTool",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/SpeedShake.rend",
          "script" : {
-            "class" : "SpeedTool",
+            "class" : "SpeedShakeTool",
             "data" : {
                "Factor" : 4.0,
                "Type" : "speed"
             },
-            "file" : "$CONTENT_DATA/Scripts/SpeedTool.lua"
+            "file" : "$CONTENT_DATA/Scripts/SpeedShakeTool.lua"
          },
          "uuid" : "92c4ea3e-7f5b-449f-a925-675b154e40b2"
       },
@@ -32,12 +32,12 @@
          "name" : "SlowTool",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/SlowShake.rend",
          "script" : {
-            "class" : "SpeedTool",
+            "class" : "SpeedShakeTool",
             "data" : {
                "Factor" : 0.50,
                "Type" : "slow"
             },
-            "file" : "$CONTENT_DATA/Scripts/SpeedTool.lua"
+            "file" : "$CONTENT_DATA/Scripts/SpeedShakeTool.lua"
          },
          "uuid" : "7a2e89fb-7b08-4320-ac68-a632ae0e7f9c"
       },
@@ -46,12 +46,12 @@
          "name" : "TurboTool",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/TurboShake.rend",
          "script" : {
-            "class" : "SpeedTool",
+            "class" : "SpeedShakeTool",
             "data" : {
                "Factor" : 10.0,
                "Type" : "turbo"
             },
-            "file" : "$CONTENT_DATA/Scripts/SpeedTool.lua"
+            "file" : "$CONTENT_DATA/Scripts/SpeedShakeTool.lua"
          },
          "uuid" : "d25a7b71-d250-4f57-b7ca-3806b05a1e46"
       },
@@ -60,36 +60,49 @@
          "name" : "ResetTool",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/ResetShake.rend",
          "script" : {
-            "class" : "SpeedTool",
+            "class" : "SpeedShakeTool",
             "data" : {
                "Factor" : 1.0,
                "Type" : "reset"
             },
-            "file" : "$CONTENT_DATA/Scripts/SpeedTool.lua"
+            "file" : "$CONTENT_DATA/Scripts/SpeedShakeTool.lua"
          },
          "uuid" : "33bc7095-1468-4b6e-8894-185ac1f2ae82"
       },
       {
          "autoTool" : true,
-         "name" : "backgroundManager",
-         "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/ResetShake.rend",
-         "script" : {
-            "class" : "Manager",
-            "data" : {},
-            "file" : "$CONTENT_DATA/Scripts/Manager.lua"
-         },
-         "uuid" : "2ffc1e51-dcea-4ae5-bd86-ca0330b6177f"
-      },
-      {
-         "autoTool" : true,
-         "name" : "Silver SunShake",
+         "name" : "SilverTool",
          "previewRenderable" : "$CONTENT_DATA/Objects/Renderable/SilverShake.rend",
          "script" : {
-            "class" : "Silver",
-            "data" : {},
+            "class" : "SilverShakeTool",
+            "data" : {
+               "Type" : "silver"
+            },
             "file" : "$CONTENT_DATA/Scripts/SilverShakeTool.lua"
          },
          "uuid" : "56373b4f-5c38-401d-badd-758fac4913e8"
-      }
+      },
+      {
+        "autoTool" : true,
+        "name" : "backgroundManager",
+        "previewRenderable" : "",
+        "script" : {
+           "class" : "Manager",
+           "data" : {},
+           "file" : "$CONTENT_DATA/Scripts/Manager.lua"
+        },
+        "uuid" : "2ffc1e51-dcea-4ae5-bd86-ca0330b6177f"
+     },
+     {
+        "autoTool" : true,
+        "name" : "fantWarning",
+        //"previewRenderable" : "",
+        "script" : {
+           "class" : "FantWarn",
+           "data" : {},
+           "file" : "$CONTENT_DATA/Scripts/FantWarn.lua"
+        },
+        "uuid" : "5da72c98-ea8b-49a9-911e-5e752eefc469"
+     }
    ]
 }

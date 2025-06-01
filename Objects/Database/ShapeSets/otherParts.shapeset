@@ -1,0 +1,30 @@
+{
+   "partList" : [
+      {
+         "color" : "000000",
+         "flammable" : true,
+         "hull" : {
+            "col" : "$CONTENT_DATA/Objects/Collision/VendingMachineCollision.obj",
+            "x" : 5,
+            "y" : 8,
+            "z" : 5
+         },
+         "name" : "Super SunShake Vending Machine",
+         "physicsMaterial" : "Metal",
+         "ratings" : {
+            "buoyancy" : 6,
+            "density" : 4,
+            "durability" : 4,
+            "friction" : 4
+         },
+         "renderable" : "$SURVIVAL_DATA/Objects/Renderable/decor/obj_decor_sunshakemachine.rend",
+         "rotationSet" : "PropY",
+         "scripted" : {
+            "classname" : "VendingMachine",
+            "filename" : "$CONTENT_DATA/Scripts/VendingMachine.lua"
+         },
+         "uuid" : "2c062fa0-eb23-4567-9824-3466ee8069f3",
+         "showInInventory" : false
+      }
+   ]
+}

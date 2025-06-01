@@ -1,106 +1,135 @@
-Silver = class()
+SilverShakeTool = class()
 
 function capitalizeFirstLetter(string)
     return string:sub(1, 1):upper() .. string:sub(2)
 end
 
-function Silver.client_onCreate(self)
-    self.shakeMode = "fly"
-    self.factor = 1
+function lowercaseFirstLetter(string)
+    return string:sub(1, 1):lower() .. string:sub(2)
+end
+
+function SilverShakeTool.client_onCreate(self)
+    self.wantDrink = 0
+    self.shakeMode = "speed"
+    self.factor = 4
+    self.lastForeBuild = false
     --[[
     Other modes:
-    Fly
     Speed
     Slow
     Turbo
-    Reset
+
+    Fly mode is a seprate thing for right click, Reset has been removed
     ]]
 end
 
-function Silver.client_onEquippedUpdate(self, primary, secondary, forceBuild)
-    local secretForceBuild = false
+function SilverShakeTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
+    -- get some important stuff
 	local character = self.tool:getOwner().character
 
+    local settings = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
+    local messages = sm.json.open("$CONTENT_DATA/Scripts/messages.json")
+
 	local primaryBind = sm.gui.getKeyBinding("Create", true)
+    local reloadBind = sm.gui.getKeyBinding("Reload", true)
+    local forceBind = sm.gui.getKeyBinding("ForceBuild", true)
     local rotateBind = sm.gui.getKeyBinding("NextCreateRotation", true)
 
-	if forceBuild and secretForceBuild then
-		sm.gui.setInteractionText("", primaryBind, "Place")
-		return false, false
-	end
-
-    if self.shakeMode == nil then
-        self.shakeMode = "fly"
+    if self.shakeMode == nil then -- nil check
+        self.shakeMode = "speed"
+        self.factor = 4
     end
 
-    if self.shakeMode == "fly" then
-        if character:isSwimming() then
-            sm.gui.setInteractionText("", primaryBind, "Stop Flying")
-        else
-            sm.gui.setInteractionText("", primaryBind, "Start Flying")
-        end
-    elseif self.shakeMode == "speed" then
-        sm.gui.setInteractionText("", primaryBind, "Set Speed to 4x Normal Speed")
+    -- Knowing if we are already at our desired speed is important, as if so, speed will simply be reset back to normal
+    local speedWontChange = self.factor == ((not (character:isSwimming() or character:isDiving())) and character.clientPublicData.waterMovementSpeedFraction or character.clientPublicData.waterMovementSpeedFraction * 0.5)
+
+    -- Set interaction text for the set speed and set fly (speed checks for speedWontChange, fly checks for diving or swimming)
+    if self.shakeMode == "speed" then
+        sm.gui.setInteractionText("", primaryBind, speedWontChange and "Drink ResetShake™    " or "Drink SpeedShake™    ", reloadBind, "Open Mod Settings")
     elseif self.shakeMode == "slow" then
-        sm.gui.setInteractionText("", primaryBind, "Set Speed to 0.5x Normal Speed")
+        sm.gui.setInteractionText("", primaryBind, speedWontChange and "Drink ResetShake™    " or "Drink SlowShake™    ", reloadBind, "Open Mod Settings")
     elseif self.shakeMode == "turbo" then
-        sm.gui.setInteractionText("", primaryBind, "Set Speed to 10x Normal Speed")
-    elseif self.shakeMode == "reset" then
-        sm.gui.setInteractionText("", primaryBind, "Set Speed to 1x Normal Speed")
+        sm.gui.setInteractionText("", primaryBind, speedWontChange and "Drink ResetShake™    " or "Drink TurboShake™    ", reloadBind, "Open Mod Settings")
     end
-    sm.gui.setInteractionText("", rotateBind, "Rotate Mode", "<p textShadow='false' bg='gui_keybinds_bg' color='#ffffff' spacing='4'>" .. "Current: " .. capitalizeFirstLetter(self.shakeMode) .. "</p>")
+    -- set the mode swap interaction text and fly mode interaction text
+    sm.gui.setInteractionText("", rotateBind, "Change Super SunShake™ ".. "<p textShadow='false' bg='gui_keybinds_bg' color='#ffffff' spacing='4'>" .. "Current: " .. capitalizeFirstLetter(self.shakeMode) .. "</p>    ", forceBind, (character:isSwimming() or character:isDiving()) and "Drink FlyShake™ And Obey Newton" or "Drink FlyShake™ And Defy Gravity")
 
-    if primary == sm.tool.interactState.start and not forceBuild then
-		local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
+    -- Stop drink animation
+    if self.drinkProgress == nil then
+        self.drinkProgress = 0
+    elseif self.drinkProgress >= 20 then
+        self.tool:setBlockSprint(false)
+        self.drinkProgress = 0
+        self.drinking = false
+		self.drinkEffectAudio:stop()
+        self.drinkEffectTp:stop()
 
-		if json.alertTextEnabled then
-            if self.shakeMode == "fly" then
+        if self.tool:isLocal() then
+            setFpAnimation( self.fpAnimations, "idle", 0.25 )
+        end
+        setTpAnimation( self.tpAnimations, "idle", 10.0 )
+    end
+
+    ---- Fly Stuff ----
+    if forceBuild ~= self.lastForceBuild then
+        if forceBuild then
+            if settings.alertTextEnabled then
                 if character:isSwimming() then
                     sm.gui.displayAlertText("Your inner woc obeys Newton...", 2)
                 else
                     sm.gui.displayAlertText("Your inner woc defies gravity...", 2)
                 end
-            else
-                local factor = character.clientPublicData.waterMovementSpeedFraction
-		        if character:isSwimming() then
-		        	factor = factor * 0.5
-		        end
-                local messages = sm.json.open("$CONTENT_DATA/Scripts/messages.json")
-			    if self.factor == factor then
-			    	sm.gui.displayAlertText("Nothing happens...", 2)
-			    else
-			    	sm.gui.displayAlertText(messages[tostring(self.factor > factor)][self.shakeMode], 2)
-			    end
             end
-		end
-
-        if self.shakeMode == "fly" then
             if character:isSwimming() then
                 character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
             else
                 character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 2
             end
-        else
-            if character:isSwimming() then
-                character.clientPublicData.waterMovementSpeedFraction = self.factor * 2
-            else
-                character.clientPublicData.waterMovementSpeedFraction = self.factor
-            end
+            self.tool:setBlockSprint(true) -- Make sure to block sprinting!
+            self.wantDrink = 5
+            self.network:sendToServer("server_playerInteract", {true, 1, character, settings})
         end
-        local settings = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
-        self.network:sendToServer("server_playerInteract", {self.shakeMode, self.factor, character, settings})
-	end
 
-	return true, false
+        self.lastForceBuild = forceBuild
+    end
+
+    ---- Speed stuff ----
+
+    if primary == sm.tool.interactState.start then
+        if settings.alertTextEnabled then
+            local factor = character.clientPublicData.waterMovementSpeedFraction
+            if character:isSwimming() then
+                factor = factor * 0.5
+            end
+            if speedWontChange then
+                sm.gui.displayAlertText(messages[tostring(1 > factor)]["reset"], 2) -- Display reset text if we are already at desire desired speed
+            else
+                sm.gui.displayAlertText(messages[tostring(self.factor > factor)][self.shakeMode], 2)
+            end
+		end
+
+        if character:isSwimming() then -- Make sure to set speed to normal if we are resetting speed!
+            character.clientPublicData.waterMovementSpeedFraction = speedWontChange and 2 or self.factor * 2
+        else
+            character.clientPublicData.waterMovementSpeedFraction = speedWontChange and 1 or self.factor
+        end
+        
+        self.network:sendToServer("server_playerInteract", {false, speedWontChange and 1 or self.factor, character, settings})
+        self.tool:setBlockSprint(true) -- Make sure to block sprinting!
+        self:client_startDrinkingAnimation()
+    end
+
+	return true, true
 end
 
-function Silver.server_playerInteract(self, data)
-    local shakeMode = data[1]
+-- Server side set speed stuff
+function SilverShakeTool.server_playerInteract(self, data)
+    local speedOrFly = data[1]
     local factor = data[2]
     local character = data[3]
     local settings = data[4]
 
-    if self.shakeMode == "fly" then
+    if speedOrFly then -- Whether or not the server needs to set flight or speed
         if character:isSwimming() then
             character.publicData.waterMovementSpeedFraction = character.publicData.waterMovementSpeedFraction * 0.5
         else
@@ -124,59 +153,181 @@ function Silver.server_playerInteract(self, data)
     end
 end
 
-function Silver.client_onToggle(self)
-    if self.shakeMode == "fly" then
-        self.shakeMode = "speed"
-        self.factor = 4
-    elseif self.shakeMode == "speed" then
-        self.shakeMode = "slow"
-        self.factor = 0.5
-    elseif self.shakeMode == "slow" then
-        self.shakeMode = "turbo"
-        self.factor = 10
-    elseif self.shakeMode == "turbo" then
-        self.shakeMode = "reset"
-        self.factor = 1
-    elseif self.shakeMode == "reset" then
-        self.shakeMode = "fly"
-        self.factor = nil
+function SilverShakeTool.client_onToggle(self) -- Rotate between speedshakes™, dont if force building
+    if not self.forceBuild then
+        if self.shakeMode == "speed" then
+            self.shakeMode = "slow"
+            self.factor = 0.5
+        elseif self.shakeMode == "slow" then
+            self.shakeMode = "turbo"
+            self.factor = 10
+        elseif self.shakeMode == "turbo" then
+            self.shakeMode = "speed"
+            self.factor = 4
+        end
+        return true
+    else
+        return false
     end
-    return true
 end
 
----------------------------------------------------------------------------
--- retros animation edit
+------------------------------------------------------------------------------------
+-- GUI
+------------------------------------------------------------------------------------
+function SilverShakeTool.client_onReload(self)
+    if self.settingsGUI == nil then
+        self.settingsGUI = sm.gui.createGuiFromLayout("$CONTENT_DATA/Gui/Layouts/SettingsMenu.layout", false, {
+            isHud = false,
+            isInteractive = true,
+            needsCursor = true,
+            hidesHotbar = false,
+            isOverlapped = false,
+            backgroundAlpha = 0.0,
+        })
+        self.settingsGUI:setButtonCallback("ShakeAnimations", "client_settingsToggleChanged")
+        self.settingsGUI:setButtonCallback("ShakeAlertText", "client_settingsToggleChanged")
+        self.settingsGUI:createDropDown("FlightMode", "client_settingsFlightMode", {"Normal", "Swim", "Dive"})
+
+        local settings = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
+        self.guiSettings = {
+            shakeAnimations = false,
+            shakeAlertText = not settings["alertTextEnabled"]}
+        self:client_settingsToggleChanged("ShakeAnimations", false)
+        self:client_settingsToggleChanged("ShakeAlertText", false)
+        self:client_settingsFlightMode(capitalizeFirstLetter(settings["flightMode"]))
+    end
+    self.settingsGUI:open()
+	return true
+end
+
+function SilverShakeTool.client_settingsToggleChanged(self, button, actuallyToggle)
+    if actuallyToggle == nil then actuallyToggle = true end
+    if button == "ShakeAnimations" then
+        self.guiSettings.shakeAnimations = not self.guiSettings.shakeAnimations
+        self.settingsGUI:setText("ShakeAnimations", "Shakes In Hand    -    "..(self.guiSettings.shakeAnimations and "Enabled" or "Disabled"))
+        if actuallyToggle then shakeAnimationsEnabled = self.guiSettings.shakeAnimations end
+        
+    elseif button == "ShakeAlertText" then
+        self.guiSettings.shakeAlertText = not self.guiSettings.shakeAlertText
+        self.settingsGUI:setText("ShakeAlertText", "Shake Alert Text    -    "..(self.guiSettings.shakeAlertText and "Enabled" or "Disabled"))
+
+        if actuallyToggle then
+            local settings = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
+            settings["alertTextEnabled"] = self.guiSettings.shakeAlertText
+            sm.json.save(settings, "$CONTENT_DATA/Scripts/settings.json")
+        end
+        if actuallyToggle then
+            if self.guiSettings.shakeAlertText then
+                sm.gui.displayAlertText("Alert text like this is now on.")
+            else
+                sm.gui.displayAlertText("Alert text like this has been disabled.")
+            end
+        end
+    end
+end
+
+function SilverShakeTool.client_settingsFlightMode(self, option)
+    local character = self.tool:getOwner().character
+	if option == "Normal" or option == "Swim" or option == "Dive" then
+        local settings = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
+		settings["flightMode"] = lowercaseFirstLetter(option)
+		sm.json.save(settings, "$CONTENT_DATA/Scripts/settings.json")
+		self.network:sendToServer("server_settingsFlightMode", {option, character})
+	end
+
+    if option == "Normal" then
+        self.settingsGUI:setText("FlightModeDescriptionBox", "Functional but has visual bubbles.\nUse most of the time.")
+        self.settingsGUI:setSelectedDropDownItem("FlightMode", "Normal")
+    elseif option == "Swim" then
+        self.settingsGUI:setText("FlightModeDescriptionBox", "No bubbles, but no extra speed upward.\nUse for recording and screenshots.")
+        self.settingsGUI:setSelectedDropDownItem("FlightMode", "Swim")
+    elseif option == "Dive" then
+        self.settingsGUI:setText("FlightModeDescriptionBox", "Buggy, don't use.")
+        self.settingsGUI:setSelectedDropDownItem("FlightMode", "Dive")
+    end
+end
+
+function SilverShakeTool.server_settingsFlightMode(self, data)
+	if data[1] == "Normal" then
+		data[2]:setDiving(data[2]:isSwimming())
+		data[2]:setSwimming(data[2]:isDiving())
+	elseif data[1] == "Swim" then
+		data[2]:setSwimming(data[2]:isDiving())
+		data[2]:setDiving(false)
+    elseif data[1] == "Dive" then
+		data[2]:setDiving(data[2]:isSwimming())
+		data[2]:setSwimming(false)
+	end
+end
+
+------------------------------------------------------------------------------------
+--  \/ Animations Below \/ (Coded mostly by Retro Dogo, thanks to him!)
+------------------------------------------------------------------------------------
 
 dofile "$GAME_DATA/Scripts/game/AnimationUtil.lua"
 dofile "$SURVIVAL_DATA/Scripts/util.lua"
 
-local FlyShakeRenderable = { "$MOD_DATA/Objects/Renderable/SilverShake.rend" }
+local SilverShakeRenderable = { "$MOD_DATA/Objects/Renderable/Tools/SilverShake.rend" }
 
-function Silver.client_onCreate( self )
+local RenderablesEattoolTp = { "$SURVIVAL_DATA/Character/Char_Male/Animations/char_male_tp_eattool.rend", "$SURVIVAL_DATA/Character/Char_Tools/Char_eattool/char_eattool_tp.rend" }
+local RenderablesEattoolFp = { "$SURVIVAL_DATA/Character/Char_Male/Animations/char_male_fp_eattool.rend", "$SURVIVAL_DATA/Character/Char_Tools/Char_eattool/char_eattool_fp.rend" }
+
+function SilverShakeTool.client_onCreate( self )
 	self.tpAnimations = createTpAnimations( self.tool, {} )
 	if self.tool:isLocal() then
 		self.fpAnimations = createFpAnimations( self.tool, {} )
 	end
 
 	self.activeItem = sm.uuid.getNil()
+    self.drinkEffectTp = sm.effect.createEffect( "Eat - Drink" )
+    self.drinkEffectTp:setPosition( self.tool:getTpBonePos( "jnt_head" ) )
+	self.drinkEffectTp:setRotation( sm.vec3.getRotation( sm.vec3.new( 0, 1, 0 ), self.tool:getTpBoneDir( "jnt_head" ) ) )
+    self.drinkEffectAudio = sm.effect.createEffect( "Eat - DrinkSound" )
+    self.drinkEffectAudio:setPosition( self.tool:getTpBonePos( "jnt_head" ) )
+    self.drinking = false
 end
 
-function Silver.client_onRefresh( self )
+function SilverShakeTool.client_startDrinkingAnimation(self)
+    if shakeAnimationsEnabled and not self.drinking then
+        self.drinking = true
+        self.drinkProgress = 0
+        self.drinkEffectAudio:start()
+    
+        if self.tool:isLocal() then
+            setFpAnimation( self.fpAnimations, "drink", 0.25 )
+        end
+        setTpAnimation( self.tpAnimations, "drink", 10.0 )
+        if not self.tool:isInFirstPersonView() then
+            self.drinkEffectTp:start()
+            self.drinkEffectTp:setPosition( self.tool:getTpBonePos( "jnt_head" ) )
+            self.drinkEffectTp:setRotation( sm.vec3.getRotation( sm.vec3.new( 0, 1, 0 ), self.tool:getTpBoneDir( "jnt_head" ) ) )
+        end
+    end
+end
+
+function SilverShakeTool.client_onFixedUpdate(self)
+    if self.drinking == true then
+        self.drinkProgress = self.drinkProgress + 1
+    end
+end
+
+function SilverShakeTool.client_onRefresh( self )
 	self:cl_updateActiveFood()
 end
 
-function Silver.client_onClientDataUpdate( self, clientData )
+function SilverShakeTool.client_onClientDataUpdate( self, clientData )
 	if not self.tool:isLocal() then
 		self.desiredActiveItem = clientData.activeUid
 	end
 end
 
-function Silver.cl_loadAnimations( self )
+function SilverShakeTool.cl_loadAnimations( self )
 
 	self.tpAnimations = createTpAnimations(
 			self.tool,
 			{
 				idle = { "Idle" },
+                drink = { "Drink" },
 				sprint = { "Sprint_fwd" },
 				pickup = { "Pickup", { nextAnimation = "idle" } },
 				putdown = { "Putdown" }
@@ -215,6 +366,8 @@ function Silver.cl_loadAnimations( self )
 				{
 					idle = { "Idle", { looping = true } },
 					
+                    drink = { "Drink" },
+
 					sprintInto = { "Sprint_into", { nextAnimation = "sprintIdle",  blendNext = 0.2 } },
 					sprintIdle = { "Sprint_idle", { looping = true } },
 					sprintExit = { "Sprint_exit", { nextAnimation = "idle",  blendNext = 0 } },
@@ -232,7 +385,29 @@ function Silver.cl_loadAnimations( self )
 end
 
 
-function Silver.client_onUpdate( self, dt )
+function SilverShakeTool.client_onUpdate( self, dt )
+    if self.lastShakeAnimationState ~= shakeAnimationsEnabled then
+        self.lastShakeAnimationState = shakeAnimationsEnabled
+        self:cl_updateActiveFood()
+    end
+    
+    if not shakeAnimationsEnabled then
+        self.equipped = false
+        self.wantEquipped = false
+        return
+    end
+
+    if self.wantDrink ~= nil and self.wantDrink > 0 then -- We need to wait 5 frames to play drinking animation when toggling fly mode, otherwise it doesnt play
+        self.wantDrink = self.wantDrink - 1
+        if self.wantDrink == 0 then
+            self:client_startDrinkingAnimation()
+        end
+    end
+
+    if not self.equipped then
+        self.tool:setBlockSprint(false)
+    end
+
 	-- First person animation
 	local isSprinting =  self.tool:isSprinting()
 	local isCrouching =  self.tool:isCrouching()
@@ -245,12 +420,13 @@ function Silver.client_onUpdate( self, dt )
 			elseif not self.tool:isSprinting() and ( self.fpAnimations.currentAnimation == "sprintIdle" or self.fpAnimations.currentAnimation == "sprintInto" ) then
 				swapFpAnimation( self.fpAnimations, "sprintInto", "sprintExit", 0.0 )
 			end
-			if not isOnGround and self.wasOnGround and self.fpAnimations.currentAnimation ~= "jump" then
+			if not isOnGround and self.wasOnGround and self.fpAnimations.currentAnimation ~= "jump" and not self.drinking then
 				swapFpAnimation( self.fpAnimations, "land", "jump", 0.02 )
-			elseif isOnGround and not self.wasOnGround and self.fpAnimations.currentAnimation ~= "land" then
+			elseif isOnGround and not self.wasOnGround and self.fpAnimations.currentAnimation ~= "land" and not self.drinking then
 				swapFpAnimation( self.fpAnimations, "jump", "land", 0.02 )
-			end
+            end
 		end
+
 		updateFpAnimations( self.fpAnimations, self.equipped, dt )
 
 		self.wasOnGround = isOnGround
@@ -315,7 +491,7 @@ function Silver.client_onUpdate( self, dt )
 	
 end
 
-function Silver.client_onEquip( self, animate )
+function SilverShakeTool.client_onEquip( self, animate )
 	if self.tool:isLocal() then
 		self.activeItem = sm.localPlayer.getActiveItem()
 		self:cl_updateActiveFood()
@@ -329,7 +505,7 @@ function Silver.client_onEquip( self, animate )
 	self.wantEquipped = true
 end
 
-function Silver.cl_updateActiveFood( self )
+function SilverShakeTool.cl_updateActiveFood( self )
 	self:cl_updateEatRenderables()
 	self:cl_loadAnimations()
 	if self.activeItem == nil or self.activeItem == sm.uuid.getNil() then
@@ -345,10 +521,10 @@ function Silver.cl_updateActiveFood( self )
 	end
 end
 
-function Silver.cl_updateEatRenderables( self )
+function SilverShakeTool.cl_updateEatRenderables( self )
 	
-	local animationRenderablesTp = { "$SURVIVAL_DATA/Character/Char_Male/Animations/char_male_tp_eattool.rend", "$SURVIVAL_DATA/Character/Char_Tools/Char_eattool/char_eattool_tp.rend" }
-	local animationRenderablesFp = { "$SURVIVAL_DATA/Character/Char_Male/Animations/char_male_fp_eattool.rend", "$SURVIVAL_DATA/Character/Char_Tools/Char_eattool/char_eattool_fp.rend" }
+	local animationRenderablesTp = RenderablesEattoolTp
+	local animationRenderablesFp = RenderablesEattoolFp
 
 	local currentRenderablesTp = {}
 	local currentRenderablesFp = {}
@@ -359,22 +535,22 @@ function Silver.cl_updateEatRenderables( self )
 	self.emptyTpRenderables = shallowcopy( animationRenderablesTp )
 	self.emptyFpRenderables = shallowcopy( animationRenderablesFp )
 
-	for k,v in pairs( FlyShakeRenderable ) do currentRenderablesTp[#currentRenderablesTp+1] = v end
-	for k,v in pairs( FlyShakeRenderable ) do currentRenderablesFp[#currentRenderablesFp+1] = v end
+	for k,v in pairs( SilverShakeRenderable ) do currentRenderablesTp[#currentRenderablesTp+1] = v end
+	for k,v in pairs( SilverShakeRenderable ) do currentRenderablesFp[#currentRenderablesFp+1] = v end
 	
-	self.tool:setTpRenderables( currentRenderablesTp )
+	self.tool:setTpRenderables(shakeAnimationsEnabled and currentRenderablesTp or self.emptyTpRenderables)
 	if self.tool:isLocal() then
-		self.tool:setFpRenderables( currentRenderablesFp )
+		self.tool:setFpRenderables(shakeAnimationsEnabled and currentRenderablesFp or self.emptyFpRenderables)
 	end
 end
 
-function Silver.client_onUnequip( self )
-	self.eating = false
+function SilverShakeTool.client_onUnequip( self )
+	self.drinking = false
 	self.activeItem = sm.uuid.getNil()
 	if sm.exists( self.tool ) then
 		self:cl_updateActiveFood()
 		if self.tool:isLocal() then
-			self.eatProgress = 0
+			self.drinkProgress = 0
 		end
 	end
 

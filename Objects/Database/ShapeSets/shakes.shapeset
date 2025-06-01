@@ -12,6 +12,7 @@
          "flammable" : true,
          "name" : "FlyShake",
          "physicsMaterial" : "Metal",
+         "previewRotation" : [ 0, 0, 1, 1, 0, 0, 0, 1, 0 ],
          "ratings" : {
             "buoyancy" : 7,
             "density" : 2,
@@ -24,7 +25,7 @@
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "FlyShake",
+            "classname" : "FlyShakePart",
             "data" : {
                "Type" : "fly"
             },
@@ -46,6 +47,7 @@
          "flammable" : true,
          "name" : "SpeedShake",
          "physicsMaterial" : "Metal",
+         "previewRotation" : [ 0, 0, 1, 1, 0, 0, 0, 1, 0 ],
          "ratings" : {
             "buoyancy" : 7,
             "density" : 2,
@@ -58,12 +60,12 @@
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "Speed",
+            "classname" : "SpeedShakePart",
             "data" : {
                "Factor" : 4.0,
                "Type" : "speed"
             },
-            "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
+            "filename" : "$CONTENT_DATA/Scripts/SpeedShake.lua"
          },
          "stackSize" : 5,
          "sticky" : "-Y",
@@ -81,6 +83,7 @@
          "flammable" : true,
          "name" : "SlowShake",
          "physicsMaterial" : "Metal",
+         "previewRotation" : [ 0, 0, 1, 1, 0, 0, 0, 1, 0 ],
          "ratings" : {
             "buoyancy" : 7,
             "density" : 2,
@@ -93,12 +96,12 @@
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "Speed",
+            "classname" : "SpeedShakePart",
             "data" : {
                "Factor" : 0.50,
                "Type" : "slow"
             },
-            "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
+            "filename" : "$CONTENT_DATA/Scripts/SpeedShake.lua"
          },
          "stackSize" : 5,
          "sticky" : "-Y",
@@ -116,6 +119,7 @@
          "flammable" : true,
          "name" : "TurboShake",
          "physicsMaterial" : "Metal",
+         "previewRotation" : [ 0, 0, 1, 1, 0, 0, 0, 1, 0 ],
          "ratings" : {
             "buoyancy" : 7,
             "density" : 2,
@@ -128,12 +132,12 @@
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "Speed",
+            "classname" : "SpeedShakePart",
             "data" : {
                "Factor" : 10,
                "Type" : "turbo"
             },
-            "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
+            "filename" : "$CONTENT_DATA/Scripts/SpeedShake.lua"
          },
          "stackSize" : 5,
          "sticky" : "-Y",
@@ -151,6 +155,7 @@
          "flammable" : true,
          "name" : "ResetShake",
          "physicsMaterial" : "Metal",
+         "previewRotation" : [ 0, 0, 1, 1, 0, 0, 0, 1, 0 ],
          "ratings" : {
             "buoyancy" : 7,
             "density" : 2,
@@ -163,32 +168,34 @@
          },
          "rotationSet" : "PropY",
          "scripted" : {
-            "classname" : "Speed",
+            "classname" : "SpeedShakePart",
             "data" : {
                "Factor" : 1.0,
                "Type" : "reset"
             },
-            "filename" : "$CONTENT_DATA/Scripts/Speed.lua"
+            "filename" : "$CONTENT_DATA/Scripts/SpeedShake.lua"
          },
          "stackSize" : 5,
          "sticky" : "-Y",
          "uuid" : "f4f4c787-2fb7-4c05-b6fd-f088400c3b1d"
       },
       {
-        "autoTool" : "56373b4f-5c38-401d-badd-758fac4913e8", 
-        "cylinder" : {
+         "autoTool" : "56373b4f-5c38-401d-badd-758fac4913e8",
+         "cylinder" : {
             "axis" : "Y",
             "depth" : 1,
             "diameter" : 1,
             "margin" : 0
          },
-         "name" : "Silver Sunshake",
+         "flammable" : true,
+         "name" : "SilverShake",
          "physicsMaterial" : "Metal",
+         "previewRotation" : [ 0, 0, 1, 1, 0, 0, 0, 1, 0 ],
          "ratings" : {
             "buoyancy" : 2,
             "density" : 10,
             "durability" : 9,
-            "friction" : 1
+            "friction" : 3
          },
          "renderable" : "$CONTENT_DATA/Objects/Renderable/SilverShake.rend",
          "rotationSet" : "PropY",

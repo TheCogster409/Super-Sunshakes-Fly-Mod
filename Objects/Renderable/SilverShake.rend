@@ -1,14 +1,27 @@
 {
    "lodList" : [
       {
-         "mesh" : "$CONTENT_DATA/Objects/Mesh/BetterShake.dae",
+         "mesh" : "$CONTENT_DATA/Objects/Mesh/ShakeLOD0.fbx",
          "subMeshList" : [
             {
                "material" : "DifAsgNor",
                "textureList" : [
-                  "$CONTENT_DATA/Objects/Textures/Silver/SilverShake_Dif.tga",
-                  "$CONTENT_DATA/Objects/Textures/Silver/SilverShake_Asg.tga",
-                  "$CONTENT_DATA/Objects/Textures/Silver/SilverShake_Nor.tga"
+                  "$CONTENT_DATA/Objects/Textures/New/silvershake_dif.png",
+                  "$CONTENT_DATA/Objects/Textures/New/silvershake_asg.png",
+                  "$CONTENT_DATA/Objects/Textures/New/silvershake_nor.png"
+               ]
+            }
+         ]
+      },
+      {
+         "mesh" : "$CONTENT_DATA/Objects/Mesh/ShakeLOD1.fbx",
+         "subMeshList" : [
+            {
+               "material" : "DifAsgNor",
+               "textureList" : [
+                  "$CONTENT_DATA/Objects/Textures/New/silvershake_dif.png",
+                  "$CONTENT_DATA/Objects/Textures/New/silvershake_asg.png",
+                  "$CONTENT_DATA/Objects/Textures/New/silvershake_nor.png"
                ]
             }
          ]

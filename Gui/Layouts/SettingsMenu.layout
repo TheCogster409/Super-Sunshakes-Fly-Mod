@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="LogicGateBG" position="560 240 800 600" name="MainPanel">
+        <Property key="NeedKey" value="false"/>
+        <Property key="NeedMouse" value="true"/>
+        <Property key="InheritsAlpha" value="false"/>
+        <Widget type="TextBox" skin="TextBox" position="0 20 800 100">
+            <Property key="FontName" value="SM_HeaderLarge_Wide"/>
+            <Property key="TextAlign" value="Center"/>
+            <Property key="NeedKey" value="false"/>
+            <Property key="NeedMouse" value="false"/>
+            <Property key="Caption" value="Super SunShakes Settings"/>
+        </Widget>
+        <Widget type="Widget" skin="WhiteSkin" position_real="0.067500000000000004 0.58499999999999996 1.21875 0">
+            <Property key="Alpha" value="0.25"/>
+        </Widget>
+        <Widget type="Widget" skin="WhiteSkin" position="54 101 692 1">
+            <Property key="Alpha" value="0.25"/>
+        </Widget>
+        <Widget type="Button" skin="ActiveButton" position="100 150 600 60" name="ShakeAnimations">
+            <Property key="Caption" value="Shakes In Hand    -    Enabled"/>
+            <Property key="Enabled" value="true"/>
+            <Property key="FontName" value="SM_Button"/>
+            <Property key="TextAlign" value="Center"/>
+        </Widget>
+        <Widget type="Button" skin="ActiveButton" position="100 220 600 60" name="ShakeAlertText">
+            <Property key="Enabled" value="true"/>
+            <Property key="FontName" value="SM_Button"/>
+            <Property key="TextAlign" value="Center"/>
+            <Property key="Caption" value="Shake Alert Text    -    Enabled"/>
+        </Widget>
+        <Widget type="Button" skin="ActiveButton" position="255 290 445 60" name="FlightMode">
+            <Property key="FontName" value="SM_Button"/>
+            <Property key="TextAlign" value="Center"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="105 290 150 60" name="FlightModeText">
+            <Property key="Caption" value="Flight Mode"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="255 360 445 60" name="FlightModeDescriptionBox">
+            <Property key="TextAlign" value="HCenter Top"/>
+            <Property key="Caption" value="Test"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="0 515 800 50">
+            <Property key="Caption" value="Press ESC to close this menu."/>
+            <Property key="TextAlign" value="Center"/>
+            <Property key="FontName" value="SM_Button"/>
+        </Widget>
+    </Widget>
+    <CodeGeneratorSettings/>
+</MyGUI>

@@ -9,19 +9,20 @@ function Manager.client_onRefresh(self)
 end
 
 function Manager.client_onFixedUpdate(self)
+    if shakeAnimationsEnabled == nil then shakeAnimationsEnabled = true end
+
 	if self.tool:isLocal() then
 		local character = self.tool:getOwner().character
 		if not sm.localPlayer.getCarry():isEmpty() and character:isSwimming() then
 			character.clientPublicData.waterMovementSpeedFraction = character.clientPublicData.waterMovementSpeedFraction * 0.5
 			self.network:sendToServer("server_stopFly", character)
 			if self.settings["alertTextEnabled"] then
-				sm.gui.displayAlertText("Picking up containers while flying will get you stuck! You aren't flying now.", 5)
+				sm.gui.displayAlertText("Picking up containers while flying will get you stuck!\nYour inner woc obeys Newton...", 5)
 			end
 		end
 
 		self.tick = self.tick + 1
 		if self.tick == 80 then
-			--print(sm.storage.load("stateData"..self.settings["playerUUID"]))
 			self.tick = 0
 			self.network:sendToServer("server_saveData", {character, self.settings["playerUUID"]})
 		end
@@ -98,33 +99,6 @@ function Manager.server_Fly(self, params, caller)
 	self.network:sendToClient(params["player"], "client_Fly", {character:isSwimming()})
 end
 
--- Command not implemented yet
-function Manager.server_FlightMode(self, data)
-	if data[1] == "normal" then
-		data[2]:setDiving(data[2]:isSwimming())
-		data[2]:setSwimming(data[2]:isDiving())
-	elseif data[1] == "swim" then
-		data[2]:setSwimming(data[2]:isDiving())
-		data[2]:setDiving(false)
-	else
-		data[2]:setDiving(data[2]:isSwimming())
-		data[2]:setSwimming(false)
-	end
-end
-
-function Manager.server_StupidAssCommandFix(self, params, caller)
-	self.network:sendToClient(params["player"], "client_FlightMode", params)
-end
-
-function Manager.client_FlightMode(self, params)
-	local character = params["player"]:getCharacter()
-	if params[2] == "normal" or params[2] == "swim" or params[2] == "dive" then
-		self.settings["flightMode"] = params[2]
-		sm.json.save(self.settings, "$CONTENT_DATA/Scripts/settings.json")
-		self.network:sendToServer("server_FlightMode", {self.settings["flightMode"], character})
-	end
-end
-
 function Manager.client_Fly(self, data)
 	local character = self.tool:getOwner().character
 	if character:isSwimming() then
@@ -164,41 +138,18 @@ function Manager.client_Speed(self, params)
 	end
 end
 
-function Manager.server_ToggleAlertText(self, params, caller)
-	self.network:sendToClient(params["player"], "client_ToggleAlertText", params)
-end
-
-function Manager.client_ToggleAlertText(self, params, caller)
-	if params[2] == true or params[2] == false then
-		self.settings["alertTextEnabled"] = params[2]
-		print(self.settings)
-		sm.json.save(self.settings, "$CONTENT_DATA/Scripts/settings.json")
-		
-		--[[sm.gui.displayAlertText("Test")
-
-		if params[2] then
-			sm.gui.displayAlertText("Alert text like this is now on.")
-		else
-			sm.gui.displayAlertText("Alert text like this has been disabled.")
-		end]]
-	end
-end
-
 local BindCommand = BindCommand or sm.game.bindChatCommand
 
 function sm.game.bindChatCommand(command, params, callback, help)
     if not hooked then
-        BindCommand("/speed", { { "string", " Speed Multiplier", false } }, "cl_onChatCommand", "Set speed multipler. 1 for normal, 2 for double, 0.5 for half, etc.")
-		BindCommand("/flightMode", { { "string", " Mode", false } }, "cl_onChatCommand", "Changes flight mode.\nNormal for, well, normal.\nSwim for swimming only. (up/down speed isn't applied but particles are gone.)\nDive for diving. Kind of useless.")
-		BindCommand("/fly", {}, "cl_onChatCommand", "Toggle fly mode. Same as FlyShake™")
-		BindCommand("/shakeAlertText", { { "bool", "", false } }, "cl_onChatCommand", "Whether or not alert text is shown in the mod. True or false.")
+        BindCommand("/speed", { { "string", " Speed Multiplier", false } }, "cl_onChatCommand", "Set speed multiplier. 1 for normal, 2 for double, 0.5 for half, etc.")
+		BindCommand("/fly", {}, "cl_onChatCommand", "Toggle fly mode. Same as drinking a FlyShake™")
         hooked = true
     end
     
     BindCommand(command, params, callback, help)
 end
 
--- Need to replace below because its bad but still works in meantime
 local oldWorldEvent = oldWorldEvent or sm.event.sendToWorld
 
 function sm.event.sendToWorld(world, callback, params)
@@ -214,10 +165,6 @@ function sm.event.sendToWorld(world, callback, params)
 			params[2] = sm.util.clamp(params[2], -500, 500)
         	sm.event.sendToTool(Manager.instance.tool, "server_Speed", params)
 		end
-	elseif params[1] == "/shakeAlertText" then
-        sm.event.sendToTool(Manager.instance.tool, "server_ToggleAlertText", params)
-    elseif params[1] == "/flightMode" then
-        sm.event.sendToTool(Manager.instance.tool, "server_StupidAssCommandFix", params)
     else
         oldWorldEvent(world, callback, params)
     end

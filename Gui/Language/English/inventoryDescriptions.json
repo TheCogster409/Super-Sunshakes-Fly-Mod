@@ -1,6 +1,6 @@
 {
    "1ad2874b-0f5c-4f9f-bafc-dd60ffe9a532" : {
-      "description" : "Supercharges speed to 10x normal speed. Without flying, you almost certainly will fall through the world.",
+      "description" : "With a sip of this magical energy shake, you will accelerate to 10x your normal speed!\n\n\nDISCLAIMER: Creations Of Greatness Inc, LLC is not responsible for any harm done to the customers, including death. Use of this beverage without levitation may cause falling through the ground.",
       "keywords" : [
          "sun",
          "shake",
@@ -13,17 +13,17 @@
       "title" : "TurboShake™"
    },
    "631b46aa-5a7d-4fe9-9294-ec431058d6c7" : {
-      "description" : "With a sip of this magical energy shake, you will be able to have the powers to FLY!\n\n\nDISCLAIMER: Creations Of Greatness Inc, LLC is not responsible for any harm done to the customers, including death. Lowering the world's gravity will cause the player to leviatate upward, don't use while under the influence of zero gravity.",
+      "description" : "With a sip of this magical energy shake, you will have the powers to FLY!\n\n\nDISCLAIMER: Creations Of Greatness Inc, LLC is not responsible for any harm done to the customers, including death. Lowering the world's gravity will cause the player to leviatate upward, don't use while under the influence of zero gravity.",
       "keywords" : [ "sun", "shake", "sunshake", "fly", "flyshake" ],
       "title" : "FlyShake™"
    },
    "9393f6af-a473-4833-b34e-b6482c70aa09" : {
-      "description" : "Lowers speed to half that of normal speed.",
+      "description" : "With a sip of this magical energy shake, you will deaccelerate to half of your normal speed!\n\n\nDISCLAIMER: Creations Of Greatness Inc, LLC is not responsible for any harm done to the customers, including death. Use of this beverage may result in losing any marathon you join.",
       "keywords" : [ "sun", "shake", "sunshake", "slow", "slowshake" ],
       "title" : "SlowShake™"
    },
    "f0f57ae4-e8f4-4d3b-af28-e0a8c752a0aa" : {
-      "description" : "Increases speed to 4x normal speed. Without flying, you might fall through the world.",
+      "description" : "With a sip of this magical energy shake, you will accelerate to 4x your normal speed!\n\n\nDISCLAIMER: Creations Of Greatness Inc, LLC is not responsible for any harm done to the customers, including death. Use of this beverage without levitation may cause falling through the ground.",
       "keywords" : [
          "sun",
          "shake",
@@ -36,8 +36,21 @@
       "title" : "SpeedShake™"
    },
    "f4f4c787-2fb7-4c05-b6fd-f088400c3b1d" : {
-      "description" : "Resets your speed back to normal.",
+      "description" : "With a sip of this magical energy shake, you will calm your inner woc and return to your normal speed!\n\n\nDISCLAIMER: Creations Of Greatness Inc, LLC is not responsible for any harm done to the customers, including death.",
       "keywords" : [ "sun", "shake", "sunshake", "reset", "resetshake" ],
       "title" : "ResetShake™"
+   },
+   "211a771b-6aa5-40c7-bf65-d743946656fe" : {
+      "description" : "This metallic Super SunShake™ has changing material properties!\nUse as a bundle of all the other tools if preferred. Cycle through the different Super SpeedShakes™, which changes the properties of the supermetal it is made of.\nAccess mod settings from here.\n\n\nCreations Of Greatness Inc, LLC is not responsible for any harm done to the customers, including death.",
+      "keywords" : [
+         "sun",
+         "shake",
+         "sunshake",
+         "speed",
+         "speedshake",
+         "turbo",
+         "turboshake"
+      ],
+      "title" : "SilverShake™"
    }
 }
