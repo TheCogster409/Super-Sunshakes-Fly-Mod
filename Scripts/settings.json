@@ -1,5 +1,6 @@
 
 {
 	"alertTextEnabled" : true,
-	"flightMode" : "normal"
+	"flightMode" : "normal",
+	"playerUUID" : "11f16203-3f5b-40a4-b910-298836753058"
 }
