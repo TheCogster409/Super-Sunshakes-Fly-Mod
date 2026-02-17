@@ -1,17 +1,14 @@
 [b]WARNING FOR ANYONE WHO USES 00FANT'S TOOLS MOD:
 
-His "Advanced" Tools mod will constantly reset player speed multiplier, so speed effects in this mod won't work. I cannot fix this myself, and after asking 00Fant to change this, he said nothing, blocked me, and banned me from his discord for seemingly no reason. (Other than I pointed out a flaw in his mod, and he is too narcissistic to fix it, and says its someone else's fault.) Try disabling his mod and look for alternatives, such as this mod and Ben Bingo's Block and Part Editor. I do plan to introduce all of the missing tools from his mod into this one, such as a cosmic SunShake™ as a gravity gun, and a paint bucket SunShake™, to paint whole creations or bodies.[/b]
+His "Advanced" Tools mod will constantly reset player speed multiplier, so speed effects in this mod won't work. I cannot fix this myself, and after asking 00Fant to change this, he said nothing, blocked me, and banned me from his discord for seemingly no reason. (Other than I pointed out a flaw in his mod, and he is too narcissistic to fix it, and says its someone else's fault.) Try disabling his mod and look for alternatives, such as this mod and Ben Bingo's Block and Part Editor.[/b]
 
 [i]Previous patch notes in the changelog tab at the top, beside comments.[/i]
 
-[b]2.0 Update:[/b] [i](Jun 1st, 2025, 2.0)[/i]
-Added SilverShake™ - Multitool of the other shakes for those who prefer it, also access mod settings from here
-Commands removed - /shakeAlertText, /flightMode have been removed and replaced with options in the settings menu.
-Toggleable shake animations - In settings, you can disable the shakes from appearing in your hand. Scroll in and out of that item after re-enabling.
-Updated visuals - All shakes now have higher resolution textures, as I recreated them as an SVG.
-Updated interaction text - Interaction text for tools changed, physical part variations also support custom interaction text too now.
-Fixed various animation-related bugs and issues
-Changed alert text for the FlyShake™
+[b]2.1 Update:[/b] [i](Jun 1st, 2025, 2.0)[/i]
+SilverShake™ now is ONLY used to open the mod settings menu.
+FlyShake™ multitool - the FLyShake™ now can be used as a combonation of the other speed shakes with 2 new keybinds. You can now speed up to 4x speed using this shake. However it cannot go as fast as the TurboShake™. This is meant to reduce the inventory space for this mod to 1 slot.
+There is a new keybind for all shakes besides SilverShake™ and ResetShake™ that allows you to reset speed without needing a ResetShake™ in your hotbar.
+Because this was a quick update the gifs in the description have not been updated.
 
 [hr][/hr] 
 
@@ -25,6 +22,7 @@ DISCLAIMER: Creations Of Greatness Inc, LLC is not responsible for any harm done
 
 With a sip of this magical energy shake, you will have the powers to FLY!
 Click to drink, which ascends your inner woc. Drinking again convinces your inner woc to obey Newton. Effects based upon the flight mode selected in settings. When used while the world's gravity is altered, you may sink or float constantly.
+You can also press Q and R to speedup and reset speed, which basically makes this one item the only one needed in the hotbar.
 
 [img]https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHp0dDcwZWM4azhuYXgycTE5YnZxajZzb3Z2Ym55N3g2aWs1aGpqbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/acDNCqcY0OZlLzbYci/giphy.gif[/img]
 
@@ -34,6 +32,7 @@ Click to drink, which ascends your inner woc. Drinking again convinces your inne
 
 With a sip of this magical energy shake, you will accelerate to 4x your normal speed!
 Click to drink, which accelerates your inner woc. Use of this beverage without levitation may cause falling through the ground.
+You can reset speed to normal using this shake.
 
 [img]https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWo5NXZwcmE5c2ViYmpkbXMxc3VtczA3ODlpcDNxazY5Z3RicGIxbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qyfL8QKYAGU1nUOvmg/giphy.gif[/img]
 
@@ -43,6 +42,7 @@ Click to drink, which accelerates your inner woc. Use of this beverage without l
 
 With a sip of this magical energy shake, you will decelerate to half of your normal speed!
 Click to drink, which decelerates your inner woc. Use of this beverage may result in losing any marathon you join.
+You can reset speed to normal using this shake.
 
 [img]https://media.giphy.com/media/lBwvMMhwM3jU6ATp3s/giphy.gif[/img]
 
@@ -52,6 +52,7 @@ Click to drink, which decelerates your inner woc. Use of this beverage may resul
 
 With a sip of this magical energy shake, you will accelerate to 10x your normal speed!
 Click to drink, which accelerates your inner woc. Use of this beverage without levitation may cause falling through the ground.
+You can reset speed to normal using this shake.
 
 [img]https://media.giphy.com/media/QOaICyLcXnsMtQH4mH/giphy.gif[/img]
 
@@ -68,9 +69,7 @@ Click to drink, which calms your inner woc. Use of this beverage without levitat
 
 [h3]SilverShake™[/h3]
 
-This metallic Super SunShake™ has changing material properties!
-Use as a bundle of all the other tools if preferred. Cycle through the different Super SpeedShakes™, which changes the properties of the supermetal it is made of, changing how it affects your body.
-Access mod settings from here. Use of this beverage when it is applying speed effects without levitation may cause falling through the ground, or losing marathons, it depends.
+This metallic Super SunShake™ has the ability to affect the function of other shakes. [b]ACCESS MOD SETTINGS HERE TO TURN OFF BUBBLES.[/b]
 
 [img]https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXVsMXRidG16MWxqN3N6ampvanRqZ293NHh5dndycGY5MWNhZGtuZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nUeZ47LQclHbVPpKID/giphy.gif[/img]
 
@@ -86,4 +85,4 @@ Fun fact: These placeable versions used to be the ONLY way to use the mod. You w
 [h3]There are also a few commands you can use instead:[/h3]
 
 [b]/fly[/b] - Toggles fly mode.
-[b]/speed[/b] (multipier) - Sets your speed multiplier to the inputted number. Decimals do work. 1 for default, 2 for double, 3 triple, etc. Setting it negative reverses your movement, setting it to 0 locks you in place.
+[b]/speed (multipier)[/b] - Sets your speed multiplier to the inputted number. Decimals do work. 1 for default, 2 for double, 3 triple, etc. Setting it negative reverses your movement, setting it to 0 locks you in place.

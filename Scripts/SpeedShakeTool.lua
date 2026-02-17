@@ -8,6 +8,7 @@ function SpeedShakeTool.client_onEquippedUpdate(self, primary, secondary, forceB
 	local character = self.tool:getOwner().character
 	local primaryBind = sm.gui.getKeyBinding("Create", true)
 	local forceBind = sm.gui.getKeyBinding("ForceBuild", true)
+	local rotateBind = sm.gui.getKeyBinding("NextCreateRotation", true)
 
     -- Stop drink animation
     if self.drinkProgress == nil then
@@ -31,7 +32,11 @@ function SpeedShakeTool.client_onEquippedUpdate(self, primary, secondary, forceB
 	end
 
 	sm.gui.setInteractionText("", primaryBind, "Drink "..capitalizeFirstLetter(self.data["Type"]).."Shake™ And Set Speed to "..tostring(self.data["Factor"]).."x")
-	sm.gui.setInteractionText("", forceBind, "Force Build")
+	if self.data["Type"] ~= "reset" then
+		sm.gui.setInteractionText("", forceBind, "Force Build ", rotateBind, "Reset Speed")
+	else
+		sm.gui.setInteractionText("", forceBind, "Force Build")
+	end
 
 	
 
@@ -61,6 +66,32 @@ function SpeedShakeTool.client_onEquippedUpdate(self, primary, secondary, forceB
 		self:client_startDrinkingAnimation()
 	end
 	return true, false
+end
+
+function SpeedShakeTool.client_onToggle(self) -- Reset speed upon pressing Q
+	if self.data["Type"] ~= "reset" then
+		local character = self.tool:getOwner().character
+		if character:isSwimming() then
+			character.clientPublicData.waterMovementSpeedFraction = 2
+		else
+			character.clientPublicData.waterMovementSpeedFraction = 1
+		end
+
+		local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
+		if json["alertTextEnabled"] then
+			local messages = sm.json.open("$CONTENT_DATA/Scripts/messages.json")
+			if self.data["Factor"] == factor then
+				sm.gui.displayAlertText("Nothing happens...", 2)
+			else
+				sm.gui.displayAlertText(messages[tostring(1 > character.clientPublicData.waterMovementSpeedFraction)]["reset"], 2)
+			end
+		end
+
+		self.network:sendToServer("server_speedup", {character, "1"})
+		self.tool:setBlockSprint(true)
+		self:client_startDrinkingAnimation()
+	end
+	return true
 end
 
 function SpeedShakeTool.server_speedup(self, data)

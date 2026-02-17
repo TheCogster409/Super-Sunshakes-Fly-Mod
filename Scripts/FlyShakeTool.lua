@@ -2,9 +2,10 @@ FlyShakeTool = class()
 
 function FlyShakeTool.client_onEquippedUpdate(self, primary, secondary, forceBuild)
 	local character = self.tool:getOwner().character
-
 	local primaryBind = sm.gui.getKeyBinding("Create", true)
 	local forceBind = sm.gui.getKeyBinding("ForceBuild", true)
+	local rotateBind = sm.gui.getKeyBinding("NextCreateRotation", true)
+	local reloadBind = sm.gui.getKeyBinding("Reload", true)
 
     -- Stop drink animation
     self:clientStopDrinkingAnimation()
@@ -14,8 +15,8 @@ function FlyShakeTool.client_onEquippedUpdate(self, primary, secondary, forceBui
 		return false, false
 	end
 
-    sm.gui.setInteractionText("", primaryBind, (character:isSwimming() or character:isDiving()) and "Drink FlyShake™ And Obey Newton" or "Drink FlyShake™ And Defy Gravity")
-    sm.gui.setInteractionText("", forceBind, "Force Build")
+    sm.gui.setInteractionText("", primaryBind, (character:isSwimming() or character:isDiving()) and "Drink FlyShake™ And Obey Newton " or "Drink FlyShake™ And Defy Gravity ", reloadBind, "Drink And Speedup to 4x")
+    sm.gui.setInteractionText("", forceBind, "Force Build ", rotateBind, "Reset Speed")
 
 	if primary == sm.tool.interactState.start and not forceBuild then
 		local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
@@ -39,6 +40,62 @@ function FlyShakeTool.client_onEquippedUpdate(self, primary, secondary, forceBui
     end
     --print(self.equipped, self.wantEquipped)
 	return true, false
+end
+
+function FlyShakeTool.client_onToggle(self) -- Reset speed upon pressing Q
+	local character = self.tool:getOwner().character
+	if character:isSwimming() then
+		character.clientPublicData.waterMovementSpeedFraction = 2
+	else
+		character.clientPublicData.waterMovementSpeedFraction = 1
+	end
+
+	local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
+	if json["alertTextEnabled"] then
+		local messages = sm.json.open("$CONTENT_DATA/Scripts/messages.json")
+		if self.data["Factor"] == factor then
+			sm.gui.displayAlertText("Nothing happens...", 2)
+		else
+			sm.gui.displayAlertText(messages[tostring(1 > character.clientPublicData.waterMovementSpeedFraction)]["reset"], 2)
+		end
+	end
+
+	self.network:sendToServer("server_speedup", {character, "1"})
+	self.tool:setBlockSprint(true)
+	self:client_startDrinkingAnimation()
+	return true
+end
+
+function FlyShakeTool.client_onReload(self) -- Speedup upon pressing R
+	local character = self.tool:getOwner().character
+	if character:isSwimming() then
+		character.clientPublicData.waterMovementSpeedFraction = 8
+	else
+		character.clientPublicData.waterMovementSpeedFraction = 4
+	end
+
+	local json = sm.json.open("$CONTENT_DATA/Scripts/settings.json")
+	if json["alertTextEnabled"] then
+		local messages = sm.json.open("$CONTENT_DATA/Scripts/messages.json")
+		if self.data["Factor"] == factor then
+			sm.gui.displayAlertText("Nothing happens...", 2)
+		else
+			sm.gui.displayAlertText(messages[tostring(4 > character.clientPublicData.waterMovementSpeedFraction)]["speed"], 2)
+		end
+	end
+
+	self.network:sendToServer("server_speedup", {character, "4"})
+	self.tool:setBlockSprint(true)
+	self:client_startDrinkingAnimation()
+	return true
+end
+
+function FlyShakeTool.server_speedup(self, data)
+	if data[1]:isSwimming() then
+		data[1].publicData.waterMovementSpeedFraction = tonumber(data[2]) * 2
+	else
+		data[1].publicData.waterMovementSpeedFraction = tonumber(data[2])
+	end
 end
 
 function FlyShakeTool.server_startFly(self, character)
